@@ -1,0 +1,11 @@
+{
+  "spriteSheetName": "ui\\menus\\bookflipanim-Sheet.png",
+  "frameDelay":0.05f,
+  "frameCount":7,
+  "rows":1,
+  "cols":7,
+  "sheetOrigin":[0,0],
+  "sheetSize":[1344,108],
+  "doLooping":false,
+  "playOnStart":true
+}

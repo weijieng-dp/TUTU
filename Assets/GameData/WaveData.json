@@ -1,0 +1,76 @@
+{
+    "Waves": [
+        {
+          "enemies": [
+            {
+              "type": "Eye",
+              "weight": 0.4
+            },
+            {
+              "type": "Larva",
+              "weight": 0.35
+            },
+            {
+              "type": "Girl",
+              "weight": 0.2
+            },
+            {
+              "type": "Guy",
+              "weight": 0.1
+            }
+          ],
+            "totalEnemies": 10,
+            "maxSpawnAmount": 5,
+            "spawnDelay": 0.2,
+            "waveDelay" : 4.0
+        },
+      {
+        "enemies": [
+          {
+            "type": "GuyAlt",
+            "weight": 0.3
+          },
+          {
+            "type": "GirlAlt",
+            "weight": 0.5
+          },
+          {
+            "type": "Oni",
+            "weight": 0.2
+          }
+        ],
+        "totalEnemies": 20,
+        "maxSpawnAmount": 8,
+        "spawnDelay": 0.2,
+        "waveDelay": 4.0
+      },
+      {
+        "enemies": [
+          {
+            "type": "Larva",
+            "weight": 0.3
+          },
+          {
+            "type": "GirlAlt",
+            "weight": 0.3
+          },
+          {
+            "type": "GuyAlt",
+            "weight": 0.2
+          },
+          {
+            "type": "OniAlt",
+            "weight": 0.05
+          },
+          {
+            "type": "Oni",
+            "weight": 0.05
+          }
+        ],
+        "totalEnemies": 30,
+        "maxSpawnAmount": 10,
+        "spawnDelay": 0.2,
+        "waveDelay": 4.0
+      }
+    ]
+}

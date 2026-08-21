@@ -1,0 +1,94 @@
+{
+  "Achievement": [
+    {
+      "achievementName": "First Blood",
+      "unlockType": "ENEMY",
+      "unlockCount": 4,
+      "rewardType": "ENEMY",
+      "rewardItem": [ "MEDIUM" ],
+      "requirements": [ "" ],
+      "flavourText": "Unlocked Medium Enemies",
+      "unlockText": "Kill 4 Enemies In Total"
+    },
+    {
+      "achievementName": "Apex Predators",
+      "unlockType": "ENEMY",
+      "unlockCount": 12,
+      "rewardType": "ENEMY",
+      "rewardItem": [ "LARGE" ],
+      "requirements": [ "" ],
+      "flavourText": "Unlocked Large Enemies",
+      "unlockText": "Kill 12 Enemies In Total"
+    },
+    {
+      "achievementName": "Bending Space",
+      "unlockType": "TILES",
+      "unlockCount": 2,
+      "rewardType": "TILES",
+      "rewardItem": [ "lshape_ur", "lshape_ul" ],
+      "requirements": [ "" ],
+      "flavourText": "Unlocked L Tiles",
+      "unlockText": "Place down 2 Tiles"
+    },
+    {
+      "achievementName": "Mirror Maze",
+      "unlockType": "TILES",
+      "unlockCount": 4,
+      "rewardType": "TILES",
+      "rewardItem": [ "lshape_dr", "lshape_dl" ],
+      "requirements": [ "" ],
+      "flavourText": "Unlocked Reverse L Tiles",
+      "unlockText": "Place down 4 Tiles"
+    },
+    {
+      "achievementName": "Perfect Square",
+      "unlockType": "TILES",
+      "unlockCount": 6,
+      "rewardType": "TILES",
+      "rewardItem": [ "2x2" ],
+      "requirements": [ "" ],
+      "flavourText": "Unlocked 2x2 Tiles",
+      "unlockText": "Place down 6 Tiles"
+    },
+    {
+      "achievementName": "Outbreak!",
+      "unlockType": "ITEM",
+      "unlockCount": 1,
+      "rewardType": "GIMMICK",
+      "rewardItem": [ "SWARM" ],
+      "requirements": [ "" ],
+      "flavourText": "Unlocked Swarm",
+      "unlockText": "Upgrade Projectile"
+    },
+    {
+      "achievementName": "Into Darkness",
+      "unlockType": "WIN",
+      "unlockCount": 1,
+      "rewardType": "GIMMICK",
+      "rewardItem": [ "BLIND" ],
+      "requirements": [ "" ],
+      "flavourText": "Unlocked Blind",
+      "unlockText": "Win a Run"
+    },
+    {
+      "achievementName": "Fast Feet",
+      "unlockType": "WIN",
+      "unlockCount": 2,
+      "rewardType": "GIMMICK",
+      "rewardItem": [ "FAST ENEMIES" ],
+      "requirements": [ "" ],
+      "flavourText": "Unlocked Fast Enemies",
+      "unlockText": "Win 2 Runs"
+    },
+    {
+      "achievementName": "The Final Door",
+      "unlockType": "ENDGAME",
+      "unlockCount": 1,
+      "rewardType": "ENDGAME",
+      "rewardItem": [ "" ],
+      "requirements": [ "Apex Predators", "Perfect Square", "Mirror Maze", "Into Darkness", "Outbreak!" ],
+      "flavourText": "One More Time...",
+      "unlockText": "Unlock Everything"
+    }
+  ]
+}

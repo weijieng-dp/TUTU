@@ -1,0 +1,11 @@
+{
+  "spriteSheetName": "running_test.png",
+  "frameDelay":0.15f,
+  "frameCount":25,
+  "rows":5,
+  "cols":6,
+  "sheetOrigin":[0,0],
+  "sheetSize":[120,100],
+  "doLooping":true,
+  "playOnStart":false
+}

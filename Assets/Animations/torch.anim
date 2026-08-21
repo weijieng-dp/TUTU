@@ -1,0 +1,11 @@
+{
+  "spriteSheetName": "environment\\torch-Sheet.png",
+  "frameDelay":0.10f,
+  "frameCount":4,
+  "rows":1,
+  "cols":4,
+  "sheetOrigin":[0,0],
+  "sheetSize":[128,32],
+  "doLooping":true,
+  "playOnStart":true
+}

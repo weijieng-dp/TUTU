@@ -1,0 +1,42 @@
+{
+  "animation": {
+    "eyeAttackAnim": "eye_attack.anim",
+    "eyeAttackChargeAnim": "eye_startup.anim",
+    "eyeIdleAnim": "eye_walk.anim",
+    "eyeChaseAnim": "eye_walk.anim",
+    "girlIdleAnim": "schoolgirl_idle.anim",
+    "girlIdleAnim2": "schoolgirl_idle2.anim",
+    "girlIdleAnim2Alt": "schoolgirl_idle2Alt.anim",
+    "girlChaseAnim": "schoolgirl_run.anim",
+    "girlChaseAnimAlt": "schoolgirl_runAlt.anim",
+    "girlChargeAnim": "schoolgirl_startup.anim",
+    "girlChargeAnimAlt": "schoolgirl_startupAlt.anim",
+    "oniAttack1Anim": "oni_attack1.anim",
+    "oniAttack2Anim": "oni_attack2.anim",
+    "oniAttack2AnimAlt": "oni_attack2Alt.anim",
+    "oniChaseAnim": "oni_walk.anim",
+    "oniChaseAnimAlt": "oni_walkAlt.anim",
+    "guyAttackAnim": "bottle_corpse_attack.anim",
+    "guyAttackAnimAlt": "bottle_corpse_attackAlt.anim",
+    "guyIdleAnim": "bottle_corpse_walk.anim",
+    "guyIdleAnimAlt": "bottle_corpse_walkAlt.anim",
+    "larvaAttackAnim": "larva_attack.anim",
+    "larvaChaseAnim": "larva_walk.anim"
+  },
+    "time" : {
+        "eyeIdleMin" : 0.5f,
+        "eyeIdleMax" : 1f,
+        "eyeChaseMax" : 1.5f,
+        "girlIdleMin" : 0.5f,
+        "girlIdleMax" : 2.5f,
+        "girlChaseMax" : 3.f,
+        "guyAttackCd" : 1.5f,
+        "larvaIdleMin" : 0.5f,
+        "larvaIdleMax" : 1f,
+        "larvaChaseMax" : 1.5f
+    },
+    "speed" : {
+        "eyeVelocity" : 250f,
+        "girlVelocity" : 800f
+    }
+}

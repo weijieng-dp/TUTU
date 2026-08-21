@@ -1,0 +1,11 @@
+{
+  "spriteSheetName": "sprite sheets\\larva_shoot-Sheet.png",
+  "frameDelay": 0.1f,
+  "frameCount": 6,
+  "rows": 1,
+  "cols": 6,
+  "sheetOrigin": [ 0, 0 ],
+  "sheetSize": [ 126, 16 ],
+  "doLooping": false,
+  "playOnStart": true
+}

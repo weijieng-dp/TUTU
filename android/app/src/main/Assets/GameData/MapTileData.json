@@ -1,0 +1,144 @@
+{
+    "Tiles": [
+        {
+            "tileName": "Starting_Level",
+            "prefabName": [
+                "StartingLevel Filled"
+            ],
+            "spritePath": "tiles/tile_6.png",
+            "tileType": "Start",
+            "unlocked": true,
+            "tilePos": [
+                [ 0, 0 ]
+            ]
+        },
+        {
+            "tileName": "Ending_Level",
+            "prefabName": [
+                "EndingLevel Filled"
+            ],
+            "spritePath": "tiles/tile_10.png",
+            "tileType": "End",
+            "unlocked": true,
+            "tilePos": [
+                [ 0, 0 ]
+            ]
+        },
+        {
+            "tileName": "2x1",
+            "prefabName": [
+                "2x1 Alt",
+                "2x1 Filled"
+            ],
+            "spritePath": "tiles/tile_4.png",
+            "tileType": "",
+            "unlocked": true,
+            "tilePos": [
+                [ 0, 0 ],
+                [ 1, 0 ]
+            ]
+        },
+        {
+            "tileName": "1x2",
+            "prefabName": [
+                "1x2 Alt",
+                "1x2 Filled"
+            ],
+            "spritePath": "tiles/tile_1.png",
+            "tileType": "",
+            "unlocked": true,
+            "tilePos": [
+                [ 0, 0 ],
+                [ 0, 1 ]
+            ]
+        },
+        {
+            "tileName": "2x2",
+            "prefabName": [
+                "2x2 Alt",
+                "2x2 Filled"
+            ],
+            "spritePath": "tiles/tile_7.png",
+            "tileType": "",
+            "unlocked": false,
+            "tilePos": [
+                [ 0, 0 ],
+                [ 0, 1 ],
+                [ 1, 0 ],
+                [ 1, 1 ]
+            ]
+        },
+        {
+            "tileName": "lshape_ur",
+            "prefabName": [
+                "lshape_ur Alt",
+                "lshape_ur Filled"
+            ],
+            "spritePath": "tiles/tile_2.png",
+            "tileType": "",
+            "unlocked": false,
+            "tilePos": [
+                [ 0, 0 ],
+                [ 0, 1 ],
+                [ 1, 0 ]
+            ]
+        },
+        {
+            "tileName": "lshape_ul",
+            "prefabName": [
+                "lshape_ul Alt",
+                "lshape_ul Filled"
+            ],
+            "spritePath": "tiles/tile_3.png",
+            "tileType": "",
+            "unlocked": false,
+            "tilePos": [
+                [ 0, 0 ],
+                [ 1, 0 ],
+                [ 1, 1 ]
+            ]
+        },
+        {
+            "tileName": "lshape_dr",
+            "prefabName": [
+                "lshape_dr Alt",
+                "lshape_dr Filled"
+            ],
+            "spritePath": "tiles/tile_5.png",
+            "tileType": "",
+            "unlocked": false,
+            "tilePos": [
+                [ 0, 0 ],
+                [ 0, 1 ],
+                [ 1, 1 ]
+            ]
+        },
+        {
+            "tileName": "lshape_dl",
+            "prefabName": [
+                "lshape_dl Alt",
+                "lshape_dl Filled"
+            ],
+            "spritePath": "tiles/tile_8.png",
+            "tileType": "",
+            "unlocked": false,
+            "tilePos": [
+                [ 0, 1 ],
+                [ 1, 1 ],
+                [ 1, 0 ]
+            ]
+        },
+        {
+            "tileName": "Treasure",
+            "prefabName": [
+                "Treasure Filled"
+            ],
+            "spritePath": "tiles/tile_9.png",
+            "tileType": "Treasure",
+            "unlocked": true,
+            "tilePos": [
+                [ 0, 0 ]
+            ]
+        }
+    ]
+}

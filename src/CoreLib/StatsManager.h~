@@ -1,0 +1,366 @@
+/*!
+@file       StatsManager.h
+@author     Ng Wei Jie (weijie.ng) (60%)
+@author     Ou Yukang (yukang.ng) (40%)
+@date		03/02/2026
+
+This file declares the [Stat] template class and the [StatsManager] class.
+The Stat class provides a flexible system for handling modifiable gameplay
+statistics using base values, additive offsets, and multiplicative modifiers.
+The StatsManager class centralizes all player-related statistics such as
+health, movement speed, attack values, and projectile behavior.
+
+Copyright (C) 2025 DigiPen Institute of Technology.
+All rights reserved.
+*/
+/*____________________________________________________________________________*/
+
+
+#pragma once
+#include <string>
+#include <type_traits>
+#include <cassert>
+#include <map>
+#include <unordered_map>
+#include <functional>
+
+#include "Platform.h"
+#include "refl.hpp"
+class IValue {
+public:
+	virtual IValue& operator+= (double other) = 0;
+	virtual IValue& operator-= (double other) = 0;
+	virtual IValue& operator*= (float other) = 0;
+
+	virtual void Reset() = 0;
+	virtual double GetNetValue() = 0;
+};
+
+template <typename T>
+class Stat : public IValue
+{
+	static_assert(std::is_arithmetic_v<T>, "Stat can only be used with arithmetic types!");
+
+	T base{};
+	float multiplier{ 1.f };
+	T offset{};
+	T netValue{};
+
+	std::optional<T> floor;
+	std::optional<T> ceiling;
+
+	void Recalculate() { 
+		netValue = (base + offset) * multiplier;
+		if (floor.has_value() && netValue < floor.value()) {
+			offset += floor.value() - netValue;
+			netValue += floor.value()- netValue;
+		}
+		if (ceiling.has_value() && netValue > ceiling.value()) {
+			offset -= netValue - ceiling.value();
+			netValue -= netValue - ceiling.value();
+		}
+	}
+
+public:
+
+	/*!
+* \brief
+*    Constructs a Stat with a specified base value.
+*
+* \param
+*    _baseValue - The initial base value of the statistic.
+*/
+	Stat(T _baseValue) :base{ _baseValue }, netValue{ base }, floor{ std::nullopt }, ceiling{std::nullopt} {}
+	Stat(T _baseValue, T _floor, T _ceiling) :base{ _baseValue }, netValue{ base }, floor{}, ceiling{} {
+		if (_floor > _ceiling) {
+			ceiling = floor = _floor;
+		}
+	}
+	Stat(T _baseValue, T _val, bool setMax) :base{ _baseValue }, netValue{ base }, floor{}, ceiling{} {
+		if (setMax) {
+			ceiling = _val;
+		}
+		else {
+			floor = _val;
+		}
+	}
+
+	/*!
+* \brief
+*    Retrieves the final computed value of the statistic after all
+*    offsets and multipliers have been applied.
+*
+* \return
+*    [T] The current computed statistic value.
+*/
+	T Get() { return netValue; }
+
+
+	/*!
+* \brief
+*    Applies an additive offset to the statistic and recalculates
+*    the final value.
+*
+* \param
+*    _offset - The value to add to the current offset.
+*/
+	void AddOffset(T _offset){
+		offset += _offset;
+		Recalculate();
+	}
+
+	/*!
+* \brief
+*    Applies a multiplicative modifier to the statistic and
+*    recalculates the final value.
+*
+* \param
+*    _multiplier - The multiplier value to add to the current multiplier.
+*/
+	void AddMultiplier(float _multiplier) {
+		multiplier += _multiplier;
+		Recalculate();
+	}
+
+	/*!
+* \brief
+*    Combines two Stat objects by summing their base values and offsets,
+*    then applying their respective multipliers.
+*
+* \param
+*    other - Another Stat object to combine with.
+*
+* \return
+*    [T] The computed combined value of both statistics.
+*/
+	template <typename U>
+	T operator+(Stat<U> other)
+	{
+		return (base + other.base + offset + other.offset) * multiplier * other.multiplier;
+	}
+
+	void Reset() override {
+		multiplier = 1.f;
+		offset = 0;
+		Recalculate();
+	}
+
+	IValue& operator+= (double val) override {
+		AddOffset(static_cast<T>(val));
+		return *this;
+	};
+	IValue& operator-= (double val) override {
+		AddOffset(-static_cast<T>(val));
+		return *this;
+	};
+	IValue& operator*= (float val) override {
+		AddMultiplier(val);
+		return *this;
+	};
+	double GetNetValue() {
+		return static_cast<double>(Get());
+	}
+};
+
+template <typename T>
+class Resource: public IValue
+{
+	static_assert(std::is_arithmetic_v<T>, "Resource can only be used with arithmetic types!");
+
+	T start{};
+	T current{};
+	Stat<T>* minimum{};
+	Stat<T>* maximum{};
+
+public:
+	Resource(T _startVal) :
+		start{ _startVal }, current{ start }, minimum{}, maximum{} {
+	}
+	Resource(T _startVal, Stat<T>& _minVal, Stat<T>& _maxVal) :
+		start{ _startVal }, current{ start }, minimum{ &_minVal }, maximum{ &_maxVal } {
+	}
+
+	Resource(T _startVal, Stat<T>& val, bool setMax) :
+		start{ _startVal }, current{ start }, minimum{}, maximum{} {
+		if (setMax)
+			maximum = &val;
+		else
+			minimum = &val;
+	}
+
+
+	T const& Curr() const { return current; }
+	void Curr(T val) {
+		if (maximum && minimum) {
+			if (maximum->Get() < minimum->Get()) {
+				maximum->Reset();
+				maximum->AddOffset(-maximum->Get());
+			}
+			current = std::clamp(val, minimum->Get(), maximum->Get());
+		}
+		else if (maximum) {
+			current = val > maximum->Get() ? maximum->Get() : val;
+		}
+		else if (minimum) {
+			current = val < minimum->Get() ? minimum->Get() : val;
+		}
+		else {
+			current = val;
+		}
+	}
+
+	T const& Start() const { return start; }
+	void Start(T val) {
+		if (maximum && minimum) {
+			if (maximum->Get() < minimum->Get()) {
+				maximum->Reset();
+				maximum->AddOffset(-maximum->Get());
+			}
+			start = std::clamp(val, minimum->Get(), maximum->Get());
+		}
+		else if (maximum) {
+			start = val > maximum->Get() ? maximum->Get() : val;
+		}
+		else if (minimum) {
+			start = val < minimum->Get() ? minimum->Get() : val;
+		}
+		else {
+			start = val;
+		}
+	}
+
+	Stat<T> const Max() const { return *maximum; }
+	Stat<T>& Max() { return *maximum; }
+	void ClearMax() {
+		maximum = nullptr;
+	}
+
+
+	Stat<T> const& Min() const { return *minimum; }
+	Stat<T>& Min() { return *minimum; }
+	void ClearMin() {
+		minimum = nullptr;
+	}
+
+
+	void Reset() override { current = start; }
+	
+
+	IValue& operator+= (double val) override {
+		Curr(current + static_cast<T>(val));
+		return *this;
+	};
+	IValue& operator-= (double val) override {
+		Curr(current - static_cast<T>(val));
+		return *this;
+	};
+	IValue& operator*= (float val) override {
+		return *this;
+		// nothing happens to the resource when multiplied
+	};
+	double GetNetValue() override {
+		return static_cast<double>(Curr());
+	}
+};
+
+
+
+class StatsManager
+{
+public:
+	StatsManager();
+	void ResetPlayer();
+	void ResetPlayerStats();
+	void ResetPlayerResources();
+
+	/*!
+	* \brief
+	*    Assigns a strength value to a projectile type.
+	*
+	* \param
+	*    Projectiletype - The identifier string of the projectile type.
+	* \param
+	*    strength - The strength value associated with the projectile type.
+	*/
+	void SetProjectileType(std::string Projectiletype, float strength);
+
+	/*!
+	* \brief
+	*    Retrieves the strength value of a specified projectile type.
+	*
+	* \param
+	*    projectiletype - The identifier string of the projectile type.
+	*
+	* \return
+	*    [float] The strength value of the projectile type.
+	*/
+	float GetProjectileType(std::string projectiletype);
+
+	IValue* GetByName(std::string const& statName);
+
+	void SetBaseRarity(int);
+	void DepositLuck(int);
+	void ResetLuck();
+	int GetBaseRarity() const;
+	int GetNetRarity() const;
+private:
+
+	std::map<std::string, float> projectiletype;
+
+	std::unordered_map<std::string, IValue*> memberLookup;
+
+	//--------------------------------------------------
+	// Touching these stats make you a pdf
+	//--------------------------------------------------
+	Stat<int> minHealth{ 0 };
+	int luck = 0;
+	int currentItemRarity = 0;
+public:
+	//--------------------------------------------------
+	// Player stats
+	//--------------------------------------------------
+	Stat<float> movementSpeed{ 1000.f , 0.f, false};
+	Stat<float> attackSpeed{ 4.0f , 2.f, false };
+
+	//--------------------------------------------------
+	// Player projectile stats
+	//--------------------------------------------------
+	Stat<float> projectileDamage{ 6.f , 3.f, false };
+	Stat<int  > projectileMultishot{ 1 , 1, false };
+	Stat<float> projectileSpread{ 0.f , 0.f, 360.f};
+	Stat<float> projectileLifetime{ 1.f , 0.f, false};
+	Stat<float> projectileSpeed{300.f, 0.f, false};
+	Stat<float> projectileSize{50.f, 1.f , false};
+
+	//--------------------------------------------------
+	// Player status effect stats
+	//--------------------------------------------------
+
+
+	//--------------------------------------------------
+	// Player resources
+	//--------------------------------------------------
+	Stat<int> maxHealth{ 6 , 12, true};
+	Resource<int> health{ 6, minHealth, maxHealth };
+
+	void debug() {
+		for(auto& [name, member] : memberLookup) {
+			LOGI("%s: %f", name.c_str(), member->GetNetValue());
+		}
+	}
+};
+REFL_AUTO(
+	type(StatsManager),
+	field(movementSpeed),
+	field(attackSpeed),
+
+	field(projectileDamage),
+	field(projectileMultishot),
+	field(projectileSpread),
+	field(projectileLifetime),
+	field(projectileSpeed),
+	field(projectileSize),
+
+	field(maxHealth),
+	field(health)
+)

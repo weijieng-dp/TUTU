@@ -1,0 +1,11 @@
+{
+  "spriteSheetName": "sprite sheets\\bottle_corpse_walk-SheetAlt.png",
+  "frameDelay": 0.15f,
+  "frameCount": 10,
+  "rows": 1,
+  "cols": 10,
+  "sheetOrigin": [ 0, 0 ],
+  "sheetSize": [ 320, 32 ],
+  "doLooping": true,
+  "playOnStart": true
+}

@@ -1,0 +1,63 @@
+===========================================================
+Project Guide - GAM200-ENGINE
+===========================================================
+
+This guide explains how to install CMake on a target machine and 
+regenerate the Visual Studio 2022 solution.
+
+-----------------------------------------------------------
+1. Install CMake
+-----------------------------------------------------------
+• Download CMake from the official website:
+  https://cmake.org/download
+
+• Choose the appropriate installer for your platform:
+  - Windows: "cmake-x.x.x-windows-x86_64.msi"
+
+• IMPORTANT: The installed CMake version must be 3.5 or higher.
+  You can check your version by running:
+     cmake --version
+
+
+=== Regenerating Visual Studio 2022 Solution with CMake ===
+
+1. Open command prompt
+
+2. Navigate to the project root folder (where CMakeLists.txt is located):
+   cd path\to\the\project
+
+3. Create a new build directory (if not already present):
+   mkdir build
+   cd build
+
+4. Run the CMake configure command for Visual Studio 2022 (x64):
+   cmake -G "Visual Studio 17 2022" -A x64 ..
+
+5. Once this finishes, a Visual Studio solution (.sln) file will be created
+   inside the "build" directory. Open it with Visual Studio 2022:
+   build\GAM200-ENGINE.sln
+
+=== Alternative ===
+Run the provided "run.bat" script. It will automatically:
+- Create the build folder,
+- Run the CMake configure command,
+- Generate the Visual Studio 2022 solution.
+
+Usage:
+   double-click run.bat
+
+
+-----------------------------------------------------------
+Project Modes
+-----------------------------------------------------------
+- Debug
+- Release
+- Package
+
+Debug and Release modes are for editor. Package build is for the game itself.
+
+
+-----------------------------------------------------------
+Level Editor Toggle
+-----------------------------------------------------------
+Right SHIFT + "=" to toggle on/off editor in real-time

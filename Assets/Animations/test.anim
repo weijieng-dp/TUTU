@@ -1,0 +1,11 @@
+{
+  "spriteSheetName": "usa_idle.png",
+  "frameDelay":0.10f,
+  "frameCount":8,
+  "rows":1,
+  "cols":8,
+  "sheetOrigin":[0,0],
+  "sheetSize":[256,32],
+  "doLooping":false,
+  "playOnStart":true
+}

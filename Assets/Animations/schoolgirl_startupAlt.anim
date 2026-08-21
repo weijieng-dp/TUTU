@@ -1,0 +1,11 @@
+{
+  "spriteSheetName": "sprite sheets\\schoolgirl_charge-SheetAlt.png",
+  "frameDelay":0.125f,
+  "frameCount":8,
+  "rows":1,
+  "cols":8,
+  "sheetOrigin":[0,0],
+  "sheetSize":[256,32],
+  "doLooping":false,
+  "playOnStart":true
+}

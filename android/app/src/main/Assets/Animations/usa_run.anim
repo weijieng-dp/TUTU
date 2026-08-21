@@ -1,0 +1,11 @@
+{
+  "spriteSheetName": "sprite sheets\\usa_run-Sheet.png",
+  "frameDelay":0.06f,
+  "frameCount":14,
+  "rows":1,
+  "cols":14,
+  "sheetOrigin":[0,0],
+  "sheetSize":[448,32],
+  "doLooping":true,
+  "playOnStart":true
+}

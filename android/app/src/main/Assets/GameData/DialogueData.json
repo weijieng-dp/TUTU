@@ -1,0 +1,556 @@
+{
+  "Dialogue": [
+    {
+      "dialogueLine": "Let's do this!",
+      "item": "",
+      "eventType": "ENTERDUNGEON",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "I hope I don't die...",
+      "item": "",
+      "eventType": "ENTERDUNGEON",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I'm ready! I think?",
+      "item": "",
+      "eventType": "ENTERDUNGEON",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Yuck! Eyeballs?",
+      "item": "",
+      "eventType": "COMBAT_S",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "Get away from me!",
+      "item": "",
+      "eventType": "COMBAT_S",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "Small things are so gross!",
+      "item": "",
+      "eventType": "COMBAT_S",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "Are all humans this scary?",
+      "item": "",
+      "eventType": "COMBAT_M",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "They're chasing me!",
+      "item": "",
+      "eventType": "COMBAT_M",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "What did I even doooooo?",
+      "item": "",
+      "eventType": "COMBAT_M",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "Why are they so big?",
+      "item": "",
+      "eventType": "COMBAT_L",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "Those weapons look painful...",
+      "item": "",
+      "eventType": "COMBAT_L",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "P-Please don't step on me!",
+      "item": "",
+      "eventType": "COMBAT_L",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "There's so many of them!",
+      "item": "",
+      "eventType": "COMBAT_SM",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "I don't know which way to run!",
+      "item": "",
+      "eventType": "COMBAT_SM",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "They're all so scary!",
+      "item": "",
+      "eventType": "COMBAT_SM",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "The big ones brought friends?",
+      "item": "",
+      "eventType": "COMBAT_SL",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "Big ones AND little ones?",
+      "item": "",
+      "eventType": "COMBAT_SL",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "Why are there so many sizes of scary?",
+      "item": "",
+      "eventType": "COMBAT_SL",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "I'm too small for this...",
+      "item": "",
+      "eventType": "COMBAT_ML",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "Why are BOTH of them here?",
+      "item": "",
+      "eventType": "COMBAT_ML",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "No one told me about the big ones!",
+      "item": "",
+      "eventType": "COMBAT_ML",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "All of them at once?",
+      "item": "",
+      "eventType": "COMBAT_E",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "I don't know if I can do this...",
+      "item": "",
+      "eventType": "COMBAT_E",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I wanna go home!!!",
+      "item": "",
+      "eventType": "COMBAT_E",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "Who turned off the lights?",
+      "item": "",
+      "eventType": "PUNISH_B",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "I can't see a thing? H-Hello?",
+      "item": "",
+      "eventType": "PUNISH_B",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "Something's here with me...",
+      "item": "",
+      "eventType": "PUNISH_B",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "There's too many!! TOO MANY!!",
+      "item": "",
+      "eventType": "PUNISH_S",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "Stop multiplying! Please!!",
+      "item": "",
+      "eventType": "PUNISH_S",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "W-Where do I even run?",
+      "item": "",
+      "eventType": "PUNISH_S",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "Why are they so FAST?!",
+      "item": "",
+      "eventType": "PUNISH_F",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "No no no no...",
+      "item": "",
+      "eventType": "PUNISH_F",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I can't keep up! I can't keep up!!",
+      "item": "",
+      "eventType": "PUNISH_F",
+      "vibe": "Scared"
+    },
+    {
+      "dialogueLine": "Finally, a break!",
+      "item": "",
+      "eventType": "TREASURE",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Shiny!",
+      "item": "",
+      "eventType": "TREASURE",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Oooh, an upgrade?",
+      "item": "",
+      "eventType": "TREASURE",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Am I lost?",
+      "item": "",
+      "eventType": "IDLE",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I feel like I should be moving on...",
+      "item": "",
+      "eventType": "IDLE",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "There has to be a way forward...",
+      "item": "",
+      "eventType": "IDLE",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I'm so close!",
+      "item": "",
+      "eventType": "EXIT",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "The exit, I can see it!",
+      "item": "",
+      "eventType": "EXIT",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Almost there, come on!",
+      "item": "",
+      "eventType": "EXIT",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "O-Ouch...",
+      "item": "",
+      "eventType": "DEATH",
+      "vibe": "Death"
+    },
+    {
+      "dialogueLine": "Now I'll never escape...",
+      "item": "",
+      "eventType": "DEATH",
+      "vibe": "Death"
+    },
+    {
+      "dialogueLine": "I knew I wasn't ready...",
+      "item": "",
+      "eventType": "DEATH",
+      "vibe": "Death"
+    },
+    {
+      "dialogueLine": "Pew pew!",
+      "item": "Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Brrap brrap pew pew!",
+      "item": "Daifu-two",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Eww!",
+      "item": "Green Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Yuck! Gross!",
+      "item": "Green Strawberry Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Brrrrr...",
+      "item": "Blue Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "It's freezing in here!",
+      "item": "Blue Strawberry Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Slooow down!",
+      "item": "Chocolate Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "You're not going anywhere!",
+      "item": "Chocolate Strawberry Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Try to shake me off!",
+      "item": "Magnet Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Stab stab stab!",
+      "item": "Knife-fuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Multiply!",
+      "item": "Split Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "There's so many!",
+      "item": "Even More Split Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Bonk!",
+      "item": "Mallet Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Bonk bonk bonk!!!",
+      "item": "Mallet Strawberry Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Yum!",
+      "item": "Chopped Carrot",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Yummy!",
+      "item": "Carrot",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Nom nom nom!",
+      "item": "Bushel O' Carrots",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Sweet!",
+      "item": "Strawberry Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Brain-freeze!",
+      "item": "Ice-cream Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Tastes of Spring!",
+      "item": "Sakuramochi",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Hey twin!",
+      "item": "Bunny Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Brother from another mother!",
+      "item": "Black Bunny Daifuku",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Lucky me!",
+      "item": "Rabbit's Foot Charm",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Windy!",
+      "item": "Wind Chime",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Ding dong!",
+      "item": "Bell",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Always use protection!",
+      "item": "Protection Omamori",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Fortune favours the bunny!",
+      "item": "Lucky Omamori",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Three treats in one!",
+      "item": "Dango",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Salty and sweet!",
+      "item": "Mitarashi Dango",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Colourful!",
+      "item": "Hanami Dango",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Shiny!",
+      "item": "Golden Chopped Carrot",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "A little hard to chew!",
+      "item": "Golden Carrot",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Rich AND healthy!",
+      "item": "Golden Bushel O' Carrots",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Boing boing boing!",
+      "item": "Bouncy Mochi",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "You can't escape me!",
+      "item": "Bouncier Mochi",
+      "eventType": "ITEM",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Not again!",
+      "item": "",
+      "eventType": "WAVE1",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I'm tired...",
+      "item": "",
+      "eventType": "WAVE1",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "Seriously?",
+      "item": "",
+      "eventType": "WAVE1",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "When will it end?",
+      "item": "",
+      "eventType": "WAVE2",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "No more, please!",
+      "item": "",
+      "eventType": "WAVE2",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I just gotta hang in there...",
+      "item": "",
+      "eventType": "WAVE2",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "Are these the last ones?",
+      "item": "",
+      "eventType": "WAVE3",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "Please let it end soon!",
+      "item": "",
+      "eventType": "WAVE3",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I'm almost there...",
+      "item": "",
+      "eventType": "WAVE3",
+      "vibe": "Dejected"
+    },
+    {
+      "dialogueLine": "I- I did it!",
+      "item": "",
+      "eventType": "WIN",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "I can't believe I did it!",
+      "item": "",
+      "eventType": "WIN",
+      "vibe": "Hopeful"
+    },
+    {
+      "dialogueLine": "Yippee! I did it!",
+      "item": "",
+      "eventType": "WIN",
+      "vibe": "Hopeful"
+    }
+  ]
+}
