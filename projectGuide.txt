@@ -61,3 +61,11 @@ Debug and Release modes are for editor. Package build is for the game itself.
 Level Editor Toggle
 -----------------------------------------------------------
 Right SHIFT + "=" to toggle on/off editor in real-time
+
+
+-----------------------------------------------------------
+Android
+-----------------------------------------------------------
+1. Install **Android Studio (Narwhal 3)**.
+2. Open Android Studio and select the Android project file.
+3. Build and run.
