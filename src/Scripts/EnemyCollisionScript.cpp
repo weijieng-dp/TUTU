@@ -16,6 +16,7 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 #include "../CoreLib/MapManager.h"
 #include "../CoreLib/AchievementManager.h"
 #include "../CoreLib/Camera.h"
+#include "WeightedRNG.h"
 
 void EnemyCollisionScript::OnStart(Registry& r) {
 	EnemyComponent* ec = GetComponent<EnemyComponent>(r);
@@ -179,7 +180,7 @@ void EnemyCollisionScript::OnDeath()
 		enemyName = enemyName.substr(0, altPos);
 	}
 
-	std::string rand = std::to_string((std::rand() % 2) + 1);
+	std::string rand = std::to_string(WeightedRNG::getRand("Collision") + 1);
 	if (enemyName == "Guy")
 	{
 		volume = volume * 0.5f;

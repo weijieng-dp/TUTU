@@ -14,6 +14,7 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 #include "../CoreLib/CEO.h"
 #include "../CoreLib/Pathfind.h"
 #include "../CoreLib/Camera.h"
+#include "WeightedRNG.h"
 
 GuyStateMachine::GuyStateMachine() {
 	StateList[es::attack] = std::make_shared<GuyAttackState>();
@@ -79,7 +80,7 @@ void GuyAttackState::OnStart(Registry& r, EntityRegistry::Entity e) {
 	float mapValue = distanceInView.x / (size.x);
 	mapValue = std::clamp(mapValue, -0.7f, 0.7f);
 
-	std::string rand = std::to_string((std::rand() % 2) + 1);
+	std::string rand = std::to_string(WeightedRNG::getRand("Guy") + 1);
 
 	CEO::Instance().GetManager<ResourceManager>()->GetAudio("SFX\\Enemy\\Guy\\GuyGrunt" + rand + ".wav").Play(volume, 1, mapValue);
 }
