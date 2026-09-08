@@ -45,6 +45,7 @@ void EnemySpawnerScript::OnStart(Registry& registry) {
 
 	if (!isWave) SpawnEnemies(registry);
 	else {
+		RefreshWaveAvailability();
 		CEO::Get<PersistentDataManager>()->Set("IsWaveMode", true);
 		CEO::Get<PersistentDataManager>()->Set<int>("WaveEnemiesSpawned", 0);
 		CEO::Get<Pathfind>()->SetMapMinMax(Vec2(-3000.f, -3000.f), Vec2(3000.f, 3000.f));
@@ -98,7 +99,7 @@ void EnemySpawnerScript::OnUpdate(Registry& registry, float dt, bool ) {
 	// wave is cleared if no enemies are alived in this wave and total enemies spawned == wave's total enemies
 	if (enemiesSpawned == 0 && totalWaveEnemiesSpawned >= waveInfo->totalEnemies ) waveInfo->cleared = true;
 
-	if (waveInfo->cleared) {					// if wave is cleared, advance to wave
+	if (waveInfo->cleared || availableEnemiesPrefab.empty()) {					// if wave is cleared, advance to wave
 		pm.Set<int>("WaveEnemiesSpawned", 0);	// reset enemies spawned back to 0
 		totalWaveEnemiesSpawned = 0;			// reset total enemies spawned back to 0
 		if (mapManager.AdvanceWave()) {			// AdvanceWave() returns true if all wave is cleared
@@ -113,6 +114,8 @@ void EnemySpawnerScript::OnUpdate(Registry& registry, float dt, bool ) {
 				textComp->text = "WAVE " + std::to_string(mapManager.GetCurrentWaveNumber());
 			}
 		}
+
+		RefreshWaveAvailability();
 		return;
 	}
 	// Wave delay to give the player some breathing room
@@ -138,13 +141,14 @@ void EnemySpawnerScript::OnUpdate(Registry& registry, float dt, bool ) {
 		}
 		else return;
 	}
+
 	// don't spawn enemies if max is spawned or total enemies has been spawned
 	if (totalWaveEnemiesSpawned >= waveInfo->totalEnemies || enemiesSpawned >= waveInfo->maxSpawnAmount) return;
 
 	spawnDelayTimer += dt;
 	if (spawnDelayTimer <= waveInfo->spawnDelay) return;
 
-	std::string chosenPrefab{ waveInfo->enemiesPrefab[waveInfo->enemyDistribution(rng)] };	// get the randomised enemy prefab to spawn
+	std::string chosenPrefab{ availableEnemiesPrefab[availableEnemyDist(rng)] };	// get the randomised enemy prefab to spawn
 
 	auto enemyEnt{ CEO::Get<ResourceManager>()->InstantiatePrefab(registry, chosenPrefab) };				// spawn the wave enemy
 	registry.GetComponent<TransformComponent>(enemyEnt)->translate = RandomiseEnemyWorldPosition(registry);	// randoomise their position in Final Wave scene
@@ -161,8 +165,30 @@ void EnemySpawnerScript::OnFixedUpdate(Registry&, float, bool)
 {
 };
 
+void EnemySpawnerScript::RefreshWaveAvailability() {
+	const WaveInfo* waveInfo{ CEO::Get<MapManager>()->GetCurrentWave() };
+	if (!waveInfo) return;
+
+	auto& achievementManager{ *CEO::Get<AchievementManager>() };
+	availableEnemiesPrefab.clear();
+	std::vector<float> availableWeights;
+	availableEnemiesPrefab.reserve(waveInfo->enemiesPrefab.size());
+	availableWeights.reserve(waveInfo->enemiesPrefab.size());
+
+	for (size_t i{}; i < waveInfo->enemiesPrefab.size(); ++i) {
+		const auto& prefab{ waveInfo->enemiesPrefab[i] };
+		if (achievementManager.IsEnemyPrefabUnlocked(prefab)) {
+			availableEnemiesPrefab.push_back(prefab);
+			availableWeights.push_back(waveInfo->enemiesWeight[i]);
+		}
+	}
+	
+	availableEnemyDist = std::discrete_distribution<>(availableWeights.begin(), availableWeights.end());
+}
+
 void EnemySpawnerScript::SpawnEnemies(Registry& registry) {
 	auto& mapManager{ *CEO::Get<MapManager>() };
+	auto& achievementManager{ *CEO::Get<AchievementManager>() };
 	auto hierarchyComp{ GetComponent<HierarchyComponnent>(registry) };
 	EntityRegistry::Entity root{ entity };
 	while (hierarchyComp && hierarchyComp->parent != 0) {	// loop to get the parent of the door
@@ -214,8 +240,8 @@ void EnemySpawnerScript::SpawnEnemies(Registry& registry) {
 	float enemySpeedMultiplier{ tile->gimmickType == GimmickType::FAST_ENEMIES ? 1.5f : 1.f };
 	for (int j{}; j < smallCount; ++j) {	// spawn the small type enemies
 		int rand = std::rand() % 2;
-		std::string enemyType[] = {"Eye", "Larva"};
-		auto enemyEnt{ CEO::Get<ResourceManager>()->InstantiatePrefab(registry, enemyType[rand])};
+		const auto& enemyPrefabs{ achievementManager.GetEnemyPrefabs(EnemyType::SMALL) };
+		auto enemyEnt{ CEO::Get<ResourceManager>()->InstantiatePrefab(registry, enemyPrefabs[rand])};
 		registry.GetComponent<EnemyComponent>(enemyEnt)->velocity *= enemySpeedMultiplier;
 		registry.GetComponent<ActiveComponent>(enemyEnt)->isActiveSelf = false;
 		enemies.push_back(enemyEnt);
@@ -223,8 +249,8 @@ void EnemySpawnerScript::SpawnEnemies(Registry& registry) {
 
 	for (int j{}; j < mediumCount; ++j) {		// spawn the medium type enemies
 		int rand = std::rand() % 4;
-		std::string enemyType[] = { "Girl", "GirlAlt" , "Guy" , "GuyAlt"};
-		auto enemyEnt{ CEO::Get<ResourceManager>()->InstantiatePrefab(registry, enemyType[rand])};
+		const auto& enemyPrefabs{ achievementManager.GetEnemyPrefabs(EnemyType::MEDIUM) };
+		auto enemyEnt{ CEO::Get<ResourceManager>()->InstantiatePrefab(registry, enemyPrefabs[rand])};
 		registry.GetComponent<EnemyComponent>(enemyEnt)->velocity *= enemySpeedMultiplier;
 		registry.GetComponent<ActiveComponent>(enemyEnt)->isActiveSelf = false;
 		enemies.push_back(enemyEnt);
@@ -232,8 +258,8 @@ void EnemySpawnerScript::SpawnEnemies(Registry& registry) {
 
 	for (int j{}; j < largeCount; ++j) {		// spawn the large type enemies
 		int rand = std::rand() % 2;
-		std::string enemyType[] = { "Oni", "OniAlt" };
-		auto enemyEnt{ CEO::Get<ResourceManager>()->InstantiatePrefab(registry, enemyType[rand])};
+		const auto& enemyPrefabs{ achievementManager.GetEnemyPrefabs(EnemyType::LARGE) };
+		auto enemyEnt{ CEO::Get<ResourceManager>()->InstantiatePrefab(registry, enemyPrefabs[rand])};
 		registry.GetComponent<EnemyComponent>(enemyEnt)->velocity *= enemySpeedMultiplier;
 		registry.GetComponent<ActiveComponent>(enemyEnt)->isActiveSelf = false;
 		enemies.push_back(enemyEnt);
