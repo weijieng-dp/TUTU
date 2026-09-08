@@ -24,7 +24,7 @@ namespace {
 #endif
 }
 
-void AchievementManager::Init(const std::string& achievementData) {
+void AchievementManager::Init(const std::string& achievementData, const std::string& enemyDataFile) {
 	if (initialized) return;							// skip if already initialized
 	achievementFilePath = basePath + achievementData;
 	if (allAchievements.empty() && !LoadAchievementData())
@@ -36,6 +36,16 @@ void AchievementManager::Init(const std::string& achievementData) {
 		LOGI("Loaded Achievement Data");
 		LoadUnlockData();
 	}
+
+
+	enemyFilePath = basePath + enemyDataFile;
+	if (!LoadEnemyData()) {
+		LOGE("Failed to load Enemy Data");
+	}
+	else {
+		LOGI("Loaded Enemy Data");
+	}
+
 	initialized = true;									// set initialized to true
 }
 
@@ -104,6 +114,43 @@ bool AchievementManager::LoadAchievementData() {
 		allAchievements.push_back(std::move(achievement));
 	}
 	return true;
+}
+
+bool AchievementManager::LoadEnemyData() {
+	if (!enemyData.empty()) return false;
+
+	rapidjson::Document doc;
+	std::stringstream ifs{ CEO::Instance().GetManager<FileManager>()->ReadFile(enemyFilePath) };
+	if (!ifs) {
+		LOGE("Error in reading %s enemyData", enemyFilePath.c_str());
+		return false;
+	}
+
+	std::stringstream buffer;
+	buffer << ifs.rdbuf();
+
+	doc.Parse(buffer.str());
+	if (doc.HasParseError()) {
+		LOGE("EnemyData json is corrupted or invalid!");
+		return false;
+	}
+	else if (!doc.HasMember("Enemy") || !doc["Enemy"].IsArray()) {
+		LOGE("EnemyData json does not have Enemy array!");
+		return false;
+	}
+
+	const rapidjson::Value& enemies{ doc["Enemy"] };
+	for (rapidjson::SizeType i{}; i < enemies.Size(); ++i) {
+		const rapidjson::Value& enemy{ enemies[i] };
+		EnemyType type{ GetEnemyTypeFromString(enemy["Type"].GetString()) };
+
+		const rapidjson::Value& enemyPrefabs{ enemy["PrefabNames"] };
+		for (rapidjson::SizeType j{}; j < enemyPrefabs.Size(); ++j) {
+			enemyData[type].emplace_back(enemyPrefabs[j].GetString());
+		}
+	}
+	return true;
+
 }
 
 const std::vector<Achievement>& AchievementManager::GetAllAchievements()
@@ -311,6 +358,57 @@ void AchievementManager::ResetData()
 	SaveUnlockData();
 	LoadUnlockData();
 	LOGI("Reset Save File");
+}
+
+std::string AchievementManager::GetEnemyTypeString(EnemyType type) const {
+	switch (type) {
+	case EnemyType::SMALL: return "SMALL";
+	case EnemyType::MEDIUM: return "MEDIUM";
+	case EnemyType::LARGE: return "LARGE";
+	case EnemyType::SMALL_AND_LARGE: return "SMALL AND LARGE";
+	case EnemyType::SMALL_AND_MEDIUM: return "SMALL AND MED";
+	case EnemyType::MEDIUM_AND_LARGE: return "MED AND LARGE";
+	case EnemyType::EVERYTHING: return "EVERYTHING";
+	default: return "NONE";
+	}
+}
+
+EnemyType AchievementManager::GetEnemyTypeFromString(const std::string& typeStr) const {
+	if(typeStr == "SMALL") return EnemyType::SMALL;
+	if(typeStr == "MEDIUM") return EnemyType::MEDIUM;
+	if(typeStr == "LARGE") return EnemyType::LARGE;
+	if(typeStr == "SMALL_AND_LARGE") return EnemyType::SMALL_AND_LARGE;
+	if(typeStr == "SMALL_AND_MED" || typeStr == "SMALL AND MED") return EnemyType::SMALL_AND_MEDIUM;
+	if(typeStr == "MED_AND_LARGE" || typeStr == "MED AND LARGE") return EnemyType::MEDIUM_AND_LARGE;
+	if (typeStr == "EVERYTHING") return EnemyType::EVERYTHING;
+	return EnemyType::NONE;
+}
+
+bool AchievementManager::IsEnemyPrefabUnlocked(const std::string& prefabName) const {
+	// check small enemy type (always unlocked)
+	for (const auto& prefab : enemyData.at(EnemyType::SMALL)) if (prefab == prefabName) return true;
+	
+	const auto& unlockedEnemyTypes{ GetUnlockedEnemyTypes()};
+
+	for (const auto& enemyType : unlockedEnemyTypes) {
+		for (const auto& prefab : enemyData.at(enemyType)) if (prefab == prefabName) return true;
+	}
+
+	return false;
+}
+
+std::vector<EnemyType> AchievementManager::GetUnlockedEnemyTypes() const {
+	std::vector<EnemyType> unlockedEnemyTypes{ EnemyType::SMALL };
+
+	for (const auto& unlocked : unlockedAchievements) {
+		if (unlocked.rewardType == RewardType::ENEMY) {
+			for (const auto& enemyType : unlocked.rewardItem) {
+				unlockedEnemyTypes.push_back(GetEnemyTypeFromString(enemyType));
+			}
+		}
+	}
+
+	return unlockedEnemyTypes;
 }
 
 void AchievementManager::SaveUnlockData()
