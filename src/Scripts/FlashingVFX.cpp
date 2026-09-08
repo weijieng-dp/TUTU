@@ -19,13 +19,23 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 
 void FlashingVFX::OnStart(Registry& r)
 {
+	SpriteRendererComponent* sprite = nullptr;
 	// Cache SpriteRendererComponent from target entity if it exists
 	sprite = target.GetEntityID()
 		? r.GetComponent<SpriteRendererComponent>(target.GetEntityID())
 		: r.GetComponent<SpriteRendererComponent>(entity);
+	if (sprite)
+		sprites.push_back(sprite);
+
+	if (additionalTarget.GetEntityID())
+	{
+		sprite = r.GetComponent<SpriteRendererComponent>(additionalTarget.GetEntityID());
+		if(sprite)
+			sprites.push_back(sprite);
+	}
 
 	// Log error if sprite component is missing
-	if (!sprite) {
+	if (!sprites.empty()) {
 		LOGE("No game object specified or game object does not have a SpriteRendererComponent");
 	}
 };
@@ -37,7 +47,7 @@ void FlashingVFX::OnUpdate(Registry&, float, bool)
 
 void FlashingVFX::OnFixedUpdate(Registry&, float dt, bool)
 {
-	if (sprite) {
+	if (!sprites.empty()) {
 		// Decrease remaining blink time if active
 		blinkTimeLeft = blinkTimeLeft > 0.f ? blinkTimeLeft - dt : blinkTimeLeft;
 
@@ -61,23 +71,27 @@ void FlashingVFX::OnFixedUpdate(Registry&, float dt, bool)
 				lerpValue =
 					(blinkPeak - (blinkDt - blinkInterval / 2)) / blinkPeak;
 			}
+			
+			for (SpriteRendererComponent* sprite : sprites)
+			{
+				// Lerp each color channel independently
+				sprite->color.r =
+					originalColor.r +
+					(colorToBlink.r - originalColor.r) * lerpValue;
 
-			// Lerp each color channel independently
-			sprite->color.r =
-				originalColor.r +
-				(colorToBlink.r - originalColor.r) * lerpValue;
+				sprite->color.g =
+					originalColor.g +
+					(colorToBlink.g - originalColor.g) * lerpValue;
 
-			sprite->color.g =
-				originalColor.g +
-				(colorToBlink.g - originalColor.g) * lerpValue;
+				sprite->color.b =
+					originalColor.b +
+					(colorToBlink.b - originalColor.b) * lerpValue;
 
-			sprite->color.b =
-				originalColor.b +
-				(colorToBlink.b - originalColor.b) * lerpValue;
+				sprite->color.a =
+					originalColor.a +
+					(colorToBlink.a - originalColor.a) * lerpValue;
+			}
 
-			sprite->color.a =
-				originalColor.a +
-				(colorToBlink.a - originalColor.a) * lerpValue;
 
 			// Reset interval timer once a full blink cycle completes
 			if (blinkDt == blinkInterval)
@@ -85,7 +99,8 @@ void FlashingVFX::OnFixedUpdate(Registry&, float dt, bool)
 		}
 		// Reset color once blinking finishes
 		else if (blinkTimeLeft <= 0.f && triggered) {
-			sprite->color = originalColor;
+			for (SpriteRendererComponent* sprite : sprites)
+				sprite->color = originalColor;
 			triggered = false;
 		}
 	}
@@ -93,14 +108,16 @@ void FlashingVFX::OnFixedUpdate(Registry&, float dt, bool)
 
 void FlashingVFX::StartFlashing()
 {
-	if (sprite) {
+	if (!sprites.empty()) {
 		// Store original color if starting fresh
 		if (blinkTimeLeft <= 0) {
-			originalColor = sprite->color;
+			for (SpriteRendererComponent* sprite : sprites)
+				originalColor = sprite->color;
 		}
 		// Restore original color if retriggered mid-flash
 		else {
-			sprite->color = originalColor;
+			for (SpriteRendererComponent* sprite : sprites)
+				sprite->color = originalColor;
 		}
 
 		// Reset blink timers

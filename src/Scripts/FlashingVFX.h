@@ -128,6 +128,7 @@ public:
      *   Target game object whose sprite will flash.
      */
     GameObject target;
+    GameObject additionalTarget;
 
     REFLECTABLE_PROPERTIES;
 
@@ -166,7 +167,7 @@ private:
      * \brief
      *   Cached pointer to the target's SpriteRendererComponent.
      */
-    SpriteRendererComponent* sprite = nullptr;
+    std::vector<SpriteRendererComponent*> sprites;
 };
 
 /*!
@@ -176,6 +177,7 @@ private:
 REFL_AUTO(
     type(FlashingVFX),
     field(target),
+    field(additionalTarget),
     field(blinkTotalTime),
     field(blinkInterval),
     field(blinkPeakHold),
