@@ -351,7 +351,7 @@ bool GLApp::init(Registry& registry, ComponentRegistry& compRegistry) {
 	CEO::Instance().GetManager<UserSettingsManager>()->Init("UserSettings.json");
 	CollisionSystem::Instance().Init();
 
-	CEO::Instance().GetManager<AchievementManager>()->Init("GameData/AchievementData.json");
+	CEO::Instance().GetManager<AchievementManager>()->Init("GameData/AchievementData.json", "GameData/EnemyData.json");
 	CEO::Instance().GetManager<LayerManager>()->Init(config);
 	CEO::Instance().GetManager<GraphicsSystem>()->Init();
 	CEO::Instance().GetManager<GraphicsSystem>()->UseTexAsBackground(false);

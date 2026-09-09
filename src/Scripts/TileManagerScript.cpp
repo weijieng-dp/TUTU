@@ -53,13 +53,17 @@ void TileManagerScript::OnStart(Registry& registry)
 	CEO::Get<EventsDispatcher>()->Dispatch<Events::ChangeCursor>(Events::ChangeCursor{ "pointer"});
 #endif
 
-	placed = false;	// set placed to false when entering map scene
-	CEO::Get<MapManager>()->GenerateTileOffers();	// generate the 3 random tile choices player can choose
+	auto& mapManager{ *CEO::Get<MapManager>() };
+	auto& achievementManager{ *CEO::Get<AchievementManager>() };
 
-	auto* start{ CEO::Get<MapManager>()->GetTile(TileType::START) };
-	auto* end{ CEO::Get<MapManager>()->GetTile(TileType::END) };
-	auto* treasure{ CEO::Get<MapManager>()->GetTile(TileType::TREASURE) };
-	auto tiles{ CEO::Get<MapManager>()->GetTileOffers() };
+
+	placed = false;	// set placed to false when entering map scene
+	mapManager.GenerateTileOffers();	// generate the 3 random tile choices player can choose
+
+	auto* start{ mapManager.GetTile(TileType::START) };
+	auto* end{ mapManager.GetTile(TileType::END) };
+	auto* treasure{ mapManager.GetTile(TileType::TREASURE) };
+	auto tiles{ mapManager.GetTileOffers() };
 
 	UITransformComponent ui;
 	unsigned layerPriority{};
@@ -79,19 +83,18 @@ void TileManagerScript::OnStart(Registry& registry)
 		}
 		else if (nameComp.name == "Enemies_Text") {
 			registry.GetComponent<TextRendererComponent>(ent)->text =
-				CEO::Instance().GetManager<MapManager>()->GetEnemyTypeString(tiles[0].enemyType);
+				achievementManager.GetEnemyTypeString(tiles[0].enemyType);
 		}
 		else if (nameComp.name == "Gimmick_Text") {
 			registry.GetComponent<TextRendererComponent>(ent)->text =
-				CEO::Instance().GetManager<MapManager>()->GetGimmickTypeString(tiles[0].gimmickType);
+				mapManager.GetGimmickTypeString(tiles[0].gimmickType);
 		}
 		else if (nameComp.name == "Item_Rarity") {
 			registry.GetComponent<SpriteRendererComponent>(ent)->texture = &CEO::Instance().GetManager<ResourceManager>()->GetTexture(
-				CEO::Instance().GetManager<MapManager>()->GetItemTierSpritePath(tiles[0].itemTier));
+				mapManager.GetItemTierSpritePath(tiles[0].itemTier));
 		}
  	}
 
-	auto& mapManager{ *CEO::Get<MapManager>() };
 	if (startTile && endTile && treasureTile) {
 		auto pos{ mapManager.CalculateGridPos(*start->tileData, start->anchor) };
 		auto uiComp{ registry.GetComponent<UITransformComponent>(startTile) };
