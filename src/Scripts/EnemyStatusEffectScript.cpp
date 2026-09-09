@@ -25,6 +25,12 @@ void EnemyStatusEffectScript::OnStart(Registry & r)
 
 	objPool = goopVec[0];
 	objPool.GetComponent<GameobjectPoolScript>()->AddPrefab(freezeParticle.GetPrefabName());
+
+	// Add a poison particle emitter to entity
+	poisonParticle = poisonParticle.Instantiate();
+	poisonParticle.SetParent(entity);
+	// set emitter radius to half width
+	poisonParticle.GetComponent<ParticleEmitterComponent>()->radius = r.GetComponent<TransformComponent>(entity)->scale.x * 0.5f;
 };
 
 
@@ -37,6 +43,7 @@ void EnemyStatusEffectScript::OnUpdate(Registry &r, float dt, bool)
 				if (vfxScript) {
 					vfxScript->colorToBlink = originalColor;
 					vfxScript->blinkTotalTime = originalFlashDuration;
+					poisonParticle.GetComponent<ParticleEmitterComponent>()->enabled = false;
 				}
 			}
 			else {
@@ -44,6 +51,7 @@ void EnemyStatusEffectScript::OnUpdate(Registry &r, float dt, bool)
 					vfxScript->colorToBlink = poisonColor;
 					vfxScript->blinkTotalTime = poison.duration;
 					vfxScript->StartFlashing();
+					poisonParticle.GetComponent<ParticleEmitterComponent>()->enabled = true;
 				}
 				if (hp) {
 					hp->currHealth = static_cast<int>(poison.UpdateCallback(dt, static_cast<double>(hp->currHealth)));
