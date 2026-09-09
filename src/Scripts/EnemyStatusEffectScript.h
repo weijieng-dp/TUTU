@@ -40,10 +40,12 @@ public:
     KnockbackEffect knockback{ 0.f, 0.f, Vec2{0.f, 0.f} };
 
     GameObject freezeParticle{"FreezeParticle1"};
+    GameObject poisonParticle{"PoisonParticle"};
 
     REFLECTABLE_PROPERTIES;
 };
 REFL_AUTO(
     type(EnemyStatusEffectScript),
-    field(freezeParticle)
+    field(freezeParticle),
+    field(poisonParticle)
 )
