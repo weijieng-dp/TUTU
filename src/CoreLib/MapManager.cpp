@@ -202,13 +202,14 @@ void MapManager::GenerateTileOffers() {
 	// if start, end, and treasure tile isn't already placed, initialize starting map data
 	if (tileInstances.empty()) InitStartingMapData();	
 
-	std::vector<int> candidates{ GetPlaceableTiles(allTiles.size()) };	// get candidate tiles
+	std::vector<int> candidates{ 2,4,5/*GetPlaceableTiles(allTiles.size())*/ };	// get candidate tiles
 
 	std::fill(currentTileOffers.begin(), currentTileOffers.end(), TileChoice{});
 
 	size_t n{ candidates.size() > currentTileOffers.size() ? currentTileOffers.size() : candidates.size() };
 
-	std::mt19937 rng{ std::random_device{}() };		// for randomising
+	std::mt19937 rng{1/* std::random_device{}()*/ };		// for randomising
+
 
 	for (size_t i{}; i < n; ++i) {
 		currentTileOffers[i].tileData = &allTiles[candidates[i]];			// generate a new tile archetype
@@ -515,15 +516,15 @@ int MapManager::PlaceSpecialTile(TileType tileType, const TileData* tileData) {
 			std::vector<int> startingTilePositions{ 0, 1, mapGridHeight - 2, mapGridHeight - 1 };
 			std::uniform_int_distribution<> startingY{ 0, static_cast<int>(startingTilePositions.size()) - 1 };
 
-			tile.anchor = { 0, startingTilePositions[startingY(rng)] }; 
+			tile.anchor = {1, /*startingTilePositions[startingY(rng)]*/1 }; 
 			break;
 		}
 		case TileType::END: {
-			tile.anchor.first = mapGridWidth - 1;
+			tile.anchor.first = /*mapGridWidth - 2*/5;
 			if (startTile == -1) tile.anchor.second = 0;
 			else {
 				auto gridPos{ CalculateGridPos(tileInstances[startTile]) };
-				tile.anchor.second = 6 - gridPos[0].second;
+				tile.anchor.second = /*6 - gridPos[0].second*/5;
 			}
 			break;
 		}
@@ -533,8 +534,8 @@ int MapManager::PlaceSpecialTile(TileType tileType, const TileData* tileData) {
 			else {
 				int offset{ mapGridHeight - 2 };
 				auto gridPos{ CalculateGridPos(tileInstances[startTile]) };
-				if (gridPos[0].second > tile.anchor.first) tile.anchor.second = gridPos[0].second - offset;
-				else tile.anchor.second = gridPos[0].second + offset;
+				if (gridPos[0].second > tile.anchor.first) tile.anchor.second =/* gridPos[0].second - offset*/0;
+				else tile.anchor.second = /*gridPos[0].second + offset*/0;
 			}
 			tile.itemTier = ItemTier::TIER4;	// treasure tile will have tier 4 items
 			break;

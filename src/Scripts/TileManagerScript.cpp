@@ -96,17 +96,19 @@ void TileManagerScript::OnStart(Registry& registry)
 		auto pos{ mapManager.CalculateGridPos(*start->tileData, start->anchor) };
 		auto uiComp{ registry.GetComponent<UITransformComponent>(startTile) };
 		bottomLeft = uiComp->relativePos;
-
+		uiComp->relativePos.x = TranslateToScreenCoordinates(pos[0].first, pos[0].second).x;
 		uiComp->relativePos.y = TranslateToScreenCoordinates(pos[0].first, pos[0].second).y;
 
 		// set treasure tile
 		pos = mapManager.CalculateGridPos(*treasure->tileData, treasure->anchor);
 		uiComp = registry.GetComponent<UITransformComponent>(treasureTile);
+		uiComp->relativePos.x = TranslateToScreenCoordinates(pos[0].first, pos[0].second).x;
 		uiComp->relativePos.y = TranslateToScreenCoordinates(pos[0].first, pos[0].second).y;
 
 		// set end tile
 		pos = mapManager.CalculateGridPos(*end->tileData, end->anchor);
 		uiComp = registry.GetComponent<UITransformComponent>(endTile);
+		uiComp->relativePos.x = TranslateToScreenCoordinates(pos[0].first, pos[0].second).x;
 		uiComp->relativePos.y = TranslateToScreenCoordinates(pos[0].first, pos[0].second).y;
 	}
 	SpawnTileInstances(registry, std::move(ui), layerPriority);	// spawn all the COMBAT tile instances
