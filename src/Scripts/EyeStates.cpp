@@ -13,6 +13,7 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 #include "../CoreLib/Pathfind.h"
 #include <cstdlib>
 #include "../CoreLib/Camera.h"
+#include "WeightedRNG.h"
 
 
 EyeStateMachine::EyeStateMachine() {
@@ -136,7 +137,7 @@ void EyeAttackState::OnUpdate(Registry& r, EntityRegistry::Entity e, float dt) {
 
 					float mapValue = distanceInView.x / (size.x);
 					mapValue = std::clamp(mapValue, -0.7f, 0.7f);
-					std::string rand = std::to_string((std::rand() % 2) + 1);
+					std::string rand = std::to_string(WeightedRNG::getRand("Eye") + 1);
 
 					CEO::Instance().GetManager<ResourceManager>()->GetAudio("SFX\\Enemy\\Eye\\EyeAttack" + rand + ".wav").Play(volume, 1, mapValue);
 				}
