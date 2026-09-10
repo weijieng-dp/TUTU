@@ -447,12 +447,12 @@
 				{
 					"Effect": "poison",
 					"IsMultiplicative": false,
-					"EffectValue": 1.5
+					"EffectValue": 3
 				},
 				{
 					"Effect": "projectileDamage",
 					"IsMultiplicative": false,
-					"EffectValue": -1
+					"EffectValue": -3
 				}
 			],
 			"IsStackable": false,
@@ -474,12 +474,12 @@
 				{
 					"Effect": "poison",
 					"IsMultiplicative": false,
-					"EffectValue": 1.5
+					"EffectValue": 1
 				},
 				{
 					"Effect": "projectileDamage",
 					"IsMultiplicative": false,
-					"EffectValue": -1
+					"EffectValue": 1
 				}
 			],
 			"IsStackable": false,
@@ -535,7 +535,7 @@
 				{
 					"Effect": "projectileDamage",
 					"IsMultiplicative": false,
-					"EffectValue": -1
+					"EffectValue": 0
 				}
 			],
 			"IsStackable": false,
@@ -648,7 +648,7 @@
 				{
 					"Effect": "projectileDamage",
 					"IsMultiplicative": false,
-					"EffectValue": -3
+					"EffectValue": -2
 				}
 			],
 			"IsStackable": false,
@@ -665,7 +665,7 @@
 				"AfterCombat",
 				"Treasure"
 			],
-			"ItemRarity": 4,
+			"ItemRarity": 3,
 			"ItemEffects": [
 				{
 					"Effect": "knockback",
@@ -715,6 +715,11 @@
 					"Effect": "projectileSplit",
 					"IsMultiplicative": false,
 					"EffectValue": 2
+				},
+				{
+					"Effect": "projectileLifetime",
+					"IsMultiplicative": false,
+					"EffectValue": -0.15
 				}
 			],
 			"IsStackable": false,
@@ -737,6 +742,11 @@
 					"Effect": "projectileSplit",
 					"IsMultiplicative": false,
 					"EffectValue": 2
+				},
+				{
+					"Effect": "projectileLifetime",
+					"IsMultiplicative": false,
+					"EffectValue": -0.15
 				}
 			],
 			"IsStackable": false,
@@ -779,7 +789,7 @@
 			"ItemEffects": [
 				{
 					"Effect": "projectileLifetime",
-					"IsMultiplicative": true,
+					"IsMultiplicative": false,
 					"EffectValue": 1
 				}
 			],
@@ -803,6 +813,11 @@
 					"Effect": "aura",
 					"IsMultiplicative": false,
 					"EffectValue": 1
+				},
+				{
+					"Effect": "attackSpeed",
+					"IsMultiplicative": false,
+					"EffectValue": -0.5
 				}
 			],
 			"IsStackable": false,
