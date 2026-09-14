@@ -231,7 +231,9 @@ void ProjectileScript::ProjectileInteractions(Registry* registry, Collider const
 	if (EnemyStatusEffectScript* comp = registry->GetComponent<EnemyStatusEffectScript>(other.entity);
 		comp) {
 		if (stats->poison.GetNetValue()) {
+			double poisonTickCarry = comp->poison.tickTimeElapsed;   // preserve sub-second cadence across re-hits
 			comp->poison = stats->poison.GenerateEffectInstance();
+			comp->poison.tickTimeElapsed = poisonTickCarry;
 		}
 		if (stats->slow.GetNetValue()) {
 			comp->slow = stats->slow.GenerateEffectInstance();

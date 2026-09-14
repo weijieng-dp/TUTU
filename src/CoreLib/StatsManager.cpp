@@ -134,13 +134,13 @@ void StatsManager::ResetTreasureCollected() {
 
 // Updates poison over time and applies periodic health damage while active.
 double PoisonEffect::UpdateCallback(float dt, double hp){
-	if (timeElapsed < duration) {
-		if (timeElapsed == 0) tickTimeElapsed = 0.f;
+	timeElapsed += dt;                           // always advance so the effect can expire/clear
+	if (tickCount < 3) {                         // deal at most 3 ticks per application
 		tickTimeElapsed += dt;
-		timeElapsed += dt;
-		if (tickTimeElapsed > 1 / effectiveness) {
-			hp -= 1;
-			tickTimeElapsed -= 1 / effectiveness;
+		if (tickTimeElapsed >= 1.0f) {           // one tick per second
+			hp -= effectiveness;                 // damage per tick = poison value
+			tickTimeElapsed -= 1.0f;
+			tickCount++;
 		}
 	}
 	return hp;
@@ -169,9 +169,13 @@ double SlowEffect::UpdateCallback(float dt, double movespeed) {
 
 // Recalculates slow effect duration and slowdown percentage from strength.
 void SlowStat::Recalculate() {
-	if (strength > 0) {
-		effect.duration = static_cast<float>(strength);
-		effect.effectiveness = 8.f/10.f;
+	if (strength >= 2) {              // Chocolate + Chocolate Strawberry held -> evolved tier
+		effect.duration = 3.f;
+		effect.effectiveness = 0.9f;   // enemy speed x0.1 for 3s
+	}
+	else if (strength > 0) {         // Chocolate Daifuku only
+		effect.duration = 2.f;
+		effect.effectiveness = 0.5f;   // enemy speed x0.5 for 2s
 	}
 	else {
 		effect.duration = 0;
@@ -192,9 +196,13 @@ double FreezeEffect::UpdateCallback(float dt, double hp) {
 
 // Recalculates freeze duration and effectiveness from the current strength.
 void FreezeStat::Recalculate() {
-	if (strength > 0) {
+	if (strength >= 2) {             // Blue + Blue Strawberry held -> evolved tier
 		effect.duration = 3.f;
-		effect.effectiveness = static_cast<float>(strength*3);
+		effect.effectiveness = 15.f;  // 15 dmg every 3 hits
+	}
+	else if (strength > 0) {         // Blue Daifuku only
+		effect.duration = 3.f;
+		effect.effectiveness = 10.f;  // 10 dmg every 3 hits
 	}
 	else {
 		effect.duration = 0;
