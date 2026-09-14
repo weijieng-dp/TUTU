@@ -107,6 +107,10 @@ class MapManager {
 public:
 	using GridPos = std::pair<int, int>;
 
+	std::vector<int> candidates{ 2,4,5/*GetPlaceableTiles(allTiles.size())*/ };	// get candidate tiles
+	bool losecon = false;
+	std::vector<TileChoice> currentTileOffers{ 3 };	// simple array that holds the generated tile choices
+
 	/*!
 	* \brief Initialize MapManager.
 	* \param[in] mapData - The JSON file to read the map data (tile archetypes) from.
@@ -152,6 +156,7 @@ public:
 	* \return - Whether the path is valid.
 	*/
 	bool CheckPathValidity(int startTileIndex, int endTileIndex);
+
 
 	/*!
 	* \brief Get the tile instance on specified map grid position
@@ -537,7 +542,6 @@ private:
 	std::vector<TileData> allTiles;					// the tile archetypes
 	std::vector<TileInstance> tileInstances;		// the tiles that has been placed
 	std::vector<std::vector<int>> tileGrid;			// map of grid pos to tile index (in tileInstances). [height][width]
-	std::array<TileChoice, 3> currentTileOffers;	// simple array that holds the generated tile choices
 
 	std::vector<WaveInfo> waves;					// container of the waves for the final wave level
 

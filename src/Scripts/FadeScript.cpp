@@ -10,6 +10,7 @@ Copyright (C) 2025 DigiPen Institute of Technology. All rights reserved.
 /*____________________________________________________________________________*/
 #include "FadeScript.h"
 #include "GameStateManagerScript.h"
+#include "../CoreLib/MapManager.h"
 
 void FadeScript::OnStart(Registry& r)
 {
@@ -106,6 +107,12 @@ void FadeScript::ToggleFade(bool toBlack, float dt, Registry& registry) {
 				haha.SetActive(false);
 			}*/
 			registry.GetComponent<ActiveComponent>(fakeButton)->isActiveSelf = false;
+			if (CEO::Get<MapManager>()->losecon)
+			{
+				SceneManager::QueueSceneAction("Lose", SceneManager::PUSH);
+				CEO::Instance().GetManager<ResourceManager>()->QueueBGM("BGM\\Am I Stuck Forever.wav");
+				CEO::Get<MapManager>()->losecon = false;
+			}
 		}
 	}
 }

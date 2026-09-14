@@ -205,6 +205,8 @@ void MenuManagerScript::ButtonClicked(std::string pressedSprite, GameObject butt
 	if (buttonName == "MainMenu_Play_Button")
 	{
 		LOGI("Play Button Clicked");
+		CEO::Get<MapManager>()->candidates = { 2,4,5/*GetPlaceableTiles(allTiles.size())*/ };
+		CEO::Get<MapManager>()->currentTileOffers.resize(3);
 
 		isFading = true;	
 		isTransitioning = false;

@@ -202,14 +202,25 @@ void MapManager::GenerateTileOffers() {
 	// if start, end, and treasure tile isn't already placed, initialize starting map data
 	if (tileInstances.empty()) InitStartingMapData();	
 
-	std::vector<int> candidates{ 2,4,5/*GetPlaceableTiles(allTiles.size())*/ };	// get candidate tiles
 
 	std::fill(currentTileOffers.begin(), currentTileOffers.end(), TileChoice{});
 
-	size_t n{ candidates.size() > currentTileOffers.size() ? currentTileOffers.size() : candidates.size() };
+	//size_t n{ candidates.size() > currentTileOffers.size() ? currentTileOffers.size() : candidates.size() };
+	size_t n{1 };
 
-	std::mt19937 rng{1/* std::random_device{}()*/ };		// for randomising
 
+	std::mt19937 rng{ std::random_device{}() };		// for randomising
+
+	if (candidates.size() == 0) {
+		currentTileOffers.resize(0);
+		if (!CheckPathValidity(GetStartTileIndex(), GetEndTileIndex()))
+		{
+			currentTileOffers.resize(3);
+			candidates = { 2,4,5/*GetPlaceableTiles(allTiles.size())*/ };
+			losecon = true;
+		}
+		return;
+	};
 
 	for (size_t i{}; i < n; ++i) {
 		currentTileOffers[i].tileData = &allTiles[candidates[i]];			// generate a new tile archetype
@@ -222,6 +233,9 @@ void MapManager::GenerateTileOffers() {
 			currentTileOffers[i].enemyType
 		);
 	}
+
+	auto end = std::remove(candidates.begin(), candidates.end(), candidates[0]);
+	candidates.erase(end);
 #ifdef _DEBUG
 	LOGD("Generated Tile offers!");
 #endif
@@ -329,6 +343,7 @@ bool MapManager::CheckPathValidity(int startTileIndex, int endTileIndex) {
 	}
 	return false;	// else tile path is not valid
 }
+
 
 TileInstance* MapManager::GetTile(int x, int y) {
 	// bounds checking

@@ -75,19 +75,44 @@ void TileManagerScript::OnStart(Registry& registry)
 		else if (nameComp.name == "End_Tile") { endTile = ent; }
 		else if (nameComp.name == "Treasure_Tile") { treasureTile = ent; }
 		else if (nameComp.name == "TileSelect") {
-			registry.GetComponent<SpriteRendererComponent>(ent)->texture = tiles[0].tileData->sprite.first;
+			if (tiles.size() != 0 && !CEO::Get<MapManager>()->losecon)
+				registry.GetComponent<SpriteRendererComponent>(ent)->texture = tiles[0].tileData->sprite.first;
+			else
+			{
+				GameObject go = ent;
+				go.SetActive(false);
+			}
 		}
-		else if (nameComp.name == "Enemies_Text") {
-			registry.GetComponent<TextRendererComponent>(ent)->text =
-				CEO::Instance().GetManager<MapManager>()->GetEnemyTypeString(tiles[0].enemyType);
+		else if (nameComp.name == "Enemies_Text") 
+		{
+			if (tiles.size() != 0 && !CEO::Get<MapManager>()->losecon)
+				registry.GetComponent<TextRendererComponent>(ent)->text =
+					CEO::Instance().GetManager<MapManager>()->GetEnemyTypeString(tiles[0].enemyType);
+			else
+			{
+				GameObject go = ent;
+				go.SetActive(false);
+			}
 		}
 		else if (nameComp.name == "Gimmick_Text") {
-			registry.GetComponent<TextRendererComponent>(ent)->text =
+			if (tiles.size() != 0 && !CEO::Get<MapManager>()->losecon)
+				registry.GetComponent<TextRendererComponent>(ent)->text =
 				CEO::Instance().GetManager<MapManager>()->GetGimmickTypeString(tiles[0].gimmickType);
+			else
+			{
+				GameObject go = ent;
+				go.SetActive(false);
+			}
 		}
 		else if (nameComp.name == "Item_Rarity") {
+			if (tiles.size() != 0 && !CEO::Get<MapManager>()->losecon)
 			registry.GetComponent<SpriteRendererComponent>(ent)->texture = &CEO::Instance().GetManager<ResourceManager>()->GetTexture(
 				CEO::Instance().GetManager<MapManager>()->GetItemTierSpritePath(tiles[0].itemTier));
+			else
+			{
+				GameObject go = ent;
+				go.SetActive(false);
+			}
 		}
  	}
 
