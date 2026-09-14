@@ -435,7 +435,7 @@
 		},
 		{
 			"ItemName": "Green Daifuku",
-			"ItemDescription": "Poison I\n-2 dmg",
+			"ItemDescription": "Poison I\n-3 dmg",
 			"ItemIconPath": "green_daifuku",
 			"ItemType": "Projectile",
 			"ItemPool": [
@@ -462,7 +462,7 @@
 		},
 		{
 			"ItemName": "Green Strawberry Daifuku",
-			"ItemDescription": "Poison II\n-1 dmg",
+			"ItemDescription": "Poison II\n-2 dmg",
 			"ItemIconPath": "green_strawberry_daifuku",
 			"ItemType": "Projectile",
 			"ItemPool": [
@@ -545,7 +545,7 @@
 		},
 		{
 			"ItemName": "Chocolate Daifuku",
-			"ItemDescription": "Slow I\n-1.5 AS",
+			"ItemDescription": "Slow I\nx0.5 enemy speed",
 			"ItemIconPath": "chocolate_daifuku",
 			"ItemType": "Projectile",
 			"ItemPool": [
@@ -572,7 +572,7 @@
 		},
 		{
 			"ItemName": "Chocolate Strawberry Daifuku",
-			"ItemDescription": "Slow II\n x0.8",
+			"ItemDescription": "Slow II\nx0.1 enemy speed",
 			"ItemIconPath": "chocolate_strawberry_daifuku",
 			"ItemType": "Projectile",
 			"ItemPool": [
@@ -631,7 +631,7 @@
 		},
 		{
 			"ItemName": "Knife-fuku",
-			"ItemDescription": "Piercing\n-3 dmg",
+			"ItemDescription": "Piercing\n-2 dmg",
 			"ItemIconPath": "knife_fuku",
 			"ItemType": "Projectile",
 			"ItemPool": [
@@ -729,7 +729,7 @@
 		},
 		{
 			"ItemName": "Even More Split Daifuku",
-			"ItemDescription": "Split more\nafter hit",
+			"ItemDescription": "Split more",
 			"ItemIconPath": "even_more_split_daifuku",
 			"ItemType": "Projectile",
 			"ItemPool": [
@@ -778,7 +778,7 @@
 		},
 		{
 			"ItemName": "Bouncier Mochi",
-			"ItemDescription": "x2 lifetime",
+			"ItemDescription": "+1s lifetime",
 			"ItemIconPath": "bouncier_mochi",
 			"ItemType": "Projectile",
 			"ItemPool": [
@@ -800,7 +800,7 @@
 		},
 		{
 			"ItemName": "Protection Omamori",
-			"ItemDescription": "AOE attack",
+			"ItemDescription": "AOE attack\n-0.5 AS",
 			"ItemIconPath": "protection_omamori",
 			"ItemType": "Projectile",
 			"ItemPool": [
@@ -827,7 +827,7 @@
 		},
 		{
 			"ItemName": "Lucky Omamori",
-			"ItemDescription": "AOE applies\\neffects",
+			"ItemDescription": "AOE applies\neffects",
 			"ItemIconPath": "lucky_omamori",
 			"ItemType": "Projectile",
 			"ItemPool": [
