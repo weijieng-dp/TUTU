@@ -72,6 +72,7 @@ void WinColliderScript::PlayerSpiral(Registry& registry, float dt) {
 		pm.Set("RoomCleared", false);					// reset room cleared flag to false
 		pm.Set("IsBlindModeOn", false);					// reset blindmodeon flag to false
 		pm.Set<int>("WaveEnemiesSpawned", 0);			// reset wave enemies spawned tracker to 0
+		fadeBg.GetComponent<FadeScript>()->sceneToTransition = "EndingCutscene";
 		fadeBg.GetComponent<FadeScript>()->FadeToBlack();	// fade to Final Wave scene
 		spiralTimer = 0.f;								// reset spiral timer
 		isSpiralActive = false;							// reset spiral active flag to false
