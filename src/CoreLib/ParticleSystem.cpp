@@ -85,9 +85,10 @@ void ParticleSystem::UpdateParticles(Registry& registry, float dt) {
 		auto& emitter{ *registry.GetComponent<ParticleEmitterComponent>(entity) };	// get the particle emitter
 		LayerComponent* layerComp{ registry.GetComponent<LayerComponent>(entity) };
 		TransformComponent* transform{ registry.GetComponent<TransformComponent>(entity) };
+		ActiveComponent* active{ registry.GetComponent<ActiveComponent>(entity) };
 
 		// skip if emitter is disabled or if current layer is not visible on camera
-		if (!emitter.enabled || layerComp != nullptr && !layerManager.IsVisibleOnCam(cameraMask, layerComp->layer)) 
+		if (!emitter.enabled || !active->isActiveSelf || !active->isActiveInHierarchy || layerComp != nullptr && !layerManager.IsVisibleOnCam(cameraMask, layerComp->layer))
 			continue;
 
 		emitter.timeElapsed += dt;

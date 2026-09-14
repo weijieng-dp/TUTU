@@ -1,0 +1,22 @@
+{
+	"Enemy": [
+		{
+			"Type": "SMALL",
+			"PrefabNames": [
+				"Eye", "Larva"
+			]
+		},
+		{
+			"Type": "MEDIUM",
+			"PrefabNames": [
+				"Girl", "GirlAlt", "Guy", "GuyAlt"
+			]
+		},
+		{
+			"Type": "LARGE",
+			"PrefabNames": [
+				"Oni", "OniAlt"
+			]
+		}
+	]
+}

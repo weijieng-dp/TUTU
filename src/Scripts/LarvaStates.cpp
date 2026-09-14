@@ -16,6 +16,7 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 #include "LarvaProjectileScript.h"
 #include <cstdlib>
 #include "../CoreLib/Camera.h"
+#include "WeightedRNG.h"
 
 LarvaStateMachine::LarvaStateMachine() {
 	StateList[es::attack] = std::make_shared<LarvaAttackState>();
@@ -162,7 +163,7 @@ void LarvaAttackState::OnStart(Registry& r, EntityRegistry::Entity e) {
 
 		float mapValue = distanceInView.x / (size.x);
 		mapValue = std::clamp(mapValue, -0.7f, 0.7f);
-		std::string rand = std::to_string((std::rand() % 2) + 1);
+		std::string rand = std::to_string(WeightedRNG::getRand("Larva") + 1);
 
 		CEO::Instance().GetManager<ResourceManager>()->GetAudio("SFX\\Enemy\\Larva\\LarvaShoot" + rand + ".wav").Play(volume, 1, mapValue);
 	}

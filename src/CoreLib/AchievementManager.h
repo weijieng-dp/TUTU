@@ -14,6 +14,15 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 #include "GameObjects.h"
 #include "FileManager.h"
 
+// Enum for the different types of enemies possible for a map tile
+enum class EnemyType {
+	SMALL = 0,				// Eyeball enemy
+	MEDIUM,					// Girl Enemy
+	LARGE,					// Oni Enemy
+	SMALL_AND_MEDIUM, SMALL_AND_LARGE, MEDIUM_AND_LARGE, EVERYTHING,	// mix and match of diff enemy types
+	NONE					// for special tiles like start, end, and treasure. No enemies will be spawned
+};
+
 // Enum for the different types unlock conditions
 enum class UnlockType {
 	ENEMY = 0,				// Enemy killed unlocks
@@ -52,13 +61,13 @@ public:
 	* \brief Initialize MapManager.
 	* \param[in] achievementData - The JSON file to read the achievement conditions from.
 	*/
-	void Init(const std::string& achievementData);
+	void Init(const std::string& achievementData, const std::string& enemyDataFile);
 	/*!
 	* \brief Loads in the tile data from JSON into memory.
 	*/
 	bool LoadAchievementData();
 
-	
+	bool LoadEnemyData();
 public:
 	
 	/*!
@@ -127,6 +136,31 @@ public:
 	*/
 	void ResetData();
 
+	/*!
+	* \brief Helper function to get enemy type enum as string.
+	* \param[in] type		- The enemy type type.
+	* \return - The string of the enemy type.
+	*/
+	std::string GetEnemyTypeString(EnemyType type) const;
+
+	/*!
+	* \brief Helper function to get enemy type enum from string.
+	* \param[in] type		- The enemy type string.
+	* \return - The equivalent enemy type enum, default answer is None (even for non-matching strings).
+	*/
+	EnemyType GetEnemyTypeFromString(const std::string& typeStr) const;
+
+	/*!
+	* \brief Helper function to get all enemy prefab names for a specific enemy type.
+	* \param[in] type		- The enemy type to get prefab names of.
+	* \return - A vector containing the prefab names available for this enemy type.
+	*/
+	const std::vector<std::string>& GetEnemyPrefabs(EnemyType type) { return enemyData[type]; }
+
+	bool IsEnemyPrefabUnlocked(const std::string& prefabName) const;
+
+	std::vector<EnemyType> GetUnlockedEnemyTypes() const;
+
 	std::queue<Achievement> popUpQueue;			// Achievement popup queue
 
 	bool showEndCutscene{ false };				// Whether to show ending cutscene
@@ -175,6 +209,9 @@ private:
 		{UnlockType::ENDGAME, 0}
 	};
 
+	std::unordered_map<EnemyType, std::vector<std::string>> enemyData;			// map of enemy type to their available prefabs
+
 	std::string achievementFilePath{};											// achievement archetypes json path
 	std::string achievementSavePath{ "Assets/GameData/Achievements.save" };		// player achievements save data path
+	std::string enemyFilePath{};
 };

@@ -25,18 +25,24 @@ struct PairHash {
 // Clear all state
 void BroadPhaseGrid::Clear(){
 
-    for (auto& row : rowBits) row.reset();
-    for (auto& col : colBits) col.reset();
+    for (auto& row : rowBits) row.second.reset();
+    for (auto& col : colBits) col.second.reset();
     entityBounds.clear();
 }
 
 // Convert world-space position to grid cell index
 std::pair<int, int> BroadPhaseGrid::WorldToCell(const Vec2& pos){
 
-    int col = static_cast<int>((pos.x + (GRID_COLS / 2) * GRID_CELL_SIZE) / GRID_CELL_SIZE);
-    int row = static_cast<int>((pos.y) / GRID_CELL_SIZE);
-    col = std::clamp(col, 0, GRID_COLS - 1);
-    row = std::clamp(row, 0, GRID_ROWS - 1);
+    // bottom-left of the grid tile starts from 0, 0
+    // the offset helps shift the center of 0, 0 grid to 0, 0
+    int col = static_cast<int>((pos.x - GRID_CELL_SIZE / 2) / GRID_CELL_SIZE);
+    int row = static_cast<int>((pos.y - GRID_CELL_SIZE / 2) / GRID_CELL_SIZE);
+
+
+    //int col = static_cast<int>((pos.x + (GRID_COLS / 2) * GRID_CELL_SIZE) / GRID_CELL_SIZE);
+    //int row = static_cast<int>((pos.y) / GRID_CELL_SIZE);
+    //col = std::clamp(col, 0, GRID_COLS - 1);
+    //row = std::clamp(row, 0, GRID_ROWS - 1);
     return { col, row };
 }
 
@@ -73,8 +79,14 @@ void BroadPhaseGrid::UpdateEntity(Registry& registry, int e){
         for (int x = it->second.minCol; x <= it->second.maxCol; ++x) {
             colBits[x].reset(e);
         }
+        it->second = { minRow, maxRow, minCol, maxCol };
     }
-   
+    else {
+        rowBits.insert({ e , std::bitset<MAX_ENTITIES>{} });
+        colBits.insert({ e , std::bitset<MAX_ENTITIES>{} });
+        
+        entityBounds.insert({ e , { minRow, maxRow, minCol, maxCol } });
+    }
 
     // Set new bits
     for (int y = minRow; y <= maxRow; ++y){
@@ -83,9 +95,6 @@ void BroadPhaseGrid::UpdateEntity(Registry& registry, int e){
     for (int x = minCol; x <= maxCol; ++x){
         colBits[x].set(e);
     }
-
-    // Store bounds for incremental updates
-    entityBounds[e] = { minRow, maxRow, minCol, maxCol };
 }
 
 // Remove an entity from the grid
@@ -120,17 +129,15 @@ void BroadPhaseGrid::GetCandidatePairs(std::vector<std::pair<EntityRegistry::Ent
         return false;
         };
 
-    for (int y = 0; y < GRID_ROWS; ++y) {
+    for (auto& row: rowBits) {
 
-        const auto& row = rowBits[y];
-        if (!row.any()) continue; // skip empty rows
+        if (!row.second.any()) continue; // skip empty rows
 
-        for (int x = 0; x < GRID_COLS; ++x) {
+        for (auto& col: colBits) {
 
-            const auto& col = colBits[x];
-            if (!col.any()) continue; // skip empty columns
+            if (!col.second.any()) continue; // skip empty columns
 
-            std::bitset<MAX_ENTITIES> intersection = row & col;
+            std::bitset<MAX_ENTITIES> intersection = row.second & col.second;
             if (!intersection.any()) continue; // skip empty intersections
 
             // Collect entities in this intersection

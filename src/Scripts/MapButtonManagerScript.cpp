@@ -131,7 +131,8 @@ void MapButtonManagerScript::ButtonClicked(Registry& registry, MapButtonManagerS
 	bool sceneSwitch, std::string sceneToSwitch)
 {
 	CEO::Instance().GetManager<ResourceManager>()->GetAudio("SFX\\UI\\UIButtonPressed.wav", "SFX").Play();
-	auto offers{ CEO::Instance().GetManager<MapManager>()->GetTileOffers() };
+	auto& mapManager{ *CEO::Get<MapManager>() };
+	auto offers{ mapManager.GetTileOffers() };
 
 	//Scene switch
 	if (sceneToSwitch == "LTiles" || sceneToSwitch == "RTiles") {
@@ -148,12 +149,12 @@ void MapButtonManagerScript::ButtonClicked(Registry& registry, MapButtonManagerS
 		displaytile.texture = offers[mainMenuButton->TileNumber].tileData->sprite.first;
 
 		int updated{ 0 };
-		auto& mapManager{ *CEO::Instance().GetManager<MapManager>() };
+		auto& achievementManager{ *CEO::Get<AchievementManager>() };
 		for (auto ent : registry.GetEntitiesWithComponent<UITransformComponent>()) {
 			if (updated == 3) break;
 			const auto& nameComp{ registry.TryGetComponent<NameComponent>(ent) };
 			if (nameComp.name == "Enemies_Text") {
-				registry.GetComponent<TextRendererComponent>(ent)->text = mapManager.GetEnemyTypeString(offers[mainMenuButton->TileNumber].enemyType);
+				registry.GetComponent<TextRendererComponent>(ent)->text = achievementManager.GetEnemyTypeString(offers[mainMenuButton->TileNumber].enemyType);
 				++updated;
 			}
 			else if (nameComp.name == "Gimmick_Text") {
