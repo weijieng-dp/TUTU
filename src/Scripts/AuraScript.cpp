@@ -30,7 +30,7 @@ void AuraScript::OnTriggerEnter(Collider const& other) {
 	ProjectileScript* projectile = parentProjectile.GetComponent<ProjectileScript>();
 	if (registry->HasComponent<HealthScript>(other.entity))
 	{
-		registry->GetComponent<HealthScript>(other.entity)->TakeDamage(projectile->damage);
+		registry->GetComponent<HealthScript>(other.entity)->TakeDamage(3);
 	}
 	if (CEO::Get<StatsManager>()->auraBuff.GetNetValue()) {
 		projectile->ProjectileInteractions(registry, other);

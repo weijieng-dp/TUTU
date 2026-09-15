@@ -84,6 +84,11 @@ void PlayerControllerScript::OnStart(Registry& registry)
 	SetPlayerHealth();
 
 	CEO::Get<Pathfind>()->SetPlayerID(entity);
+
+	// Automatically give player the aura attack for easy mode
+	ItemManager* items = CEO::Get<ItemManager>();
+	StatsManager* stats = CEO::Get<StatsManager>();
+	items->AddItem(items->GetItemList().find("Protection Omamori")->second, *stats);
 };
 
 /*!

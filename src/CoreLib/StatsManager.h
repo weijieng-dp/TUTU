@@ -878,8 +878,8 @@ public:
 	//--------------------------------------------------
 	// Player resources
 	//--------------------------------------------------
-	Stat<int> maxHealth{ 6 , 12, true};
-	Resource<int> health{ 6, minHealth, maxHealth };
+	Stat<int> maxHealth{ 8 , 14, true};
+	Resource<int> health{ 8, minHealth, maxHealth };
 
 	void Debug() {
 		for(auto& [name, member] : memberLookup) {
