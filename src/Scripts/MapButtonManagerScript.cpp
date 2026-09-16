@@ -135,36 +135,39 @@ void MapButtonManagerScript::ButtonClicked(Registry& registry, MapButtonManagerS
 	auto offers{ mapManager.GetTileOffers() };
 
 	//Scene switch
+
 	if (sceneToSwitch == "LTiles" || sceneToSwitch == "RTiles") {
 		SpriteRendererComponent& displaytile = registry.TryGetComponent<SpriteRendererComponent>(mainMenuButton->DisplayTileEntity);
+		if (CEO::Get<MapManager>()->currentTileOffers.size() != 0 && !CEO::Get<MapManager>()->losecon)
+		{
+			do {
+				mainMenuButton->TileNumber += sceneToSwitch == "LTiles" ? -1 : 1;
 
-		do {
-			mainMenuButton->TileNumber += sceneToSwitch == "LTiles" ? -1 : 1;
+				// Wrap Around
+				if (mainMenuButton->TileNumber < 0) mainMenuButton->TileNumber = static_cast<int>(offers.size()) - 1;
+				if (mainMenuButton->TileNumber >= offers.size()) mainMenuButton->TileNumber = 0;
+			} while (offers[mainMenuButton->TileNumber].tileData == nullptr);
 
-			// Wrap Around
-			if (mainMenuButton->TileNumber < 0) mainMenuButton->TileNumber = static_cast<int>(offers.size()) - 1;
-			if (mainMenuButton->TileNumber >= offers.size()) mainMenuButton->TileNumber = 0;
-		} while (offers[mainMenuButton->TileNumber].tileData == nullptr);
+			displaytile.texture = offers[mainMenuButton->TileNumber].tileData->sprite.first;
 
-		displaytile.texture = offers[mainMenuButton->TileNumber].tileData->sprite.first;
-
-		int updated{ 0 };
-		auto& achievementManager{ *CEO::Get<AchievementManager>() };
-		for (auto ent : registry.GetEntitiesWithComponent<UITransformComponent>()) {
-			if (updated == 3) break;
-			const auto& nameComp{ registry.TryGetComponent<NameComponent>(ent) };
-			if (nameComp.name == "Enemies_Text") {
-				registry.GetComponent<TextRendererComponent>(ent)->text = achievementManager.GetEnemyTypeString(offers[mainMenuButton->TileNumber].enemyType);
-				++updated;
-			}
-			else if (nameComp.name == "Gimmick_Text") {
-				registry.GetComponent<TextRendererComponent>(ent)->text = mapManager.GetGimmickTypeString(offers[mainMenuButton->TileNumber].gimmickType);
-				++updated;
-			}
-			else if (nameComp.name == "Item_Rarity") {
-				registry.GetComponent<SpriteRendererComponent>(ent)->texture = &CEO::Instance().GetManager<ResourceManager>()->GetTexture(
-					CEO::Instance().GetManager<MapManager>()->GetItemTierSpritePath(offers[mainMenuButton->TileNumber].itemTier));
-				++updated;
+			int updated{ 0 };
+			auto& achievementManager{ *CEO::Get<AchievementManager>() };
+			for (auto ent : registry.GetEntitiesWithComponent<UITransformComponent>()) {
+				if (updated == 3) break;
+				const auto& nameComp{ registry.TryGetComponent<NameComponent>(ent) };
+				if (nameComp.name == "Enemies_Text") {
+					registry.GetComponent<TextRendererComponent>(ent)->text = achievementManager.GetEnemyTypeString(offers[mainMenuButton->TileNumber].enemyType);
+					++updated;
+				}
+				else if (nameComp.name == "Gimmick_Text") {
+					registry.GetComponent<TextRendererComponent>(ent)->text = mapManager.GetGimmickTypeString(offers[mainMenuButton->TileNumber].gimmickType);
+					++updated;
+				}
+				else if (nameComp.name == "Item_Rarity") {
+					registry.GetComponent<SpriteRendererComponent>(ent)->texture = &CEO::Instance().GetManager<ResourceManager>()->GetTexture(
+						CEO::Instance().GetManager<MapManager>()->GetItemTierSpritePath(offers[mainMenuButton->TileNumber].itemTier));
+					++updated;
+				}
 			}
 		}
 	}

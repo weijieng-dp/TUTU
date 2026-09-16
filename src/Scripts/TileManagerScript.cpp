@@ -87,12 +87,11 @@ void TileManagerScript::OnStart(Registry& registry)
 				go.SetActive(false);
 			}
 		}
-		else if (nameComp.name == "Enemies_Text") 
-		{
+		else if (nameComp.name == "Enemies_Text") {
 			if (tiles.size() != 0 && !CEO::Get<MapManager>()->losecon)
-				registry.GetComponent<TextRendererComponent>(ent)->text =
-					CEO::Instance().GetManager<MapManager>()->GetEnemyTypeString(tiles[0].enemyType);
-			else
+			registry.GetComponent<TextRendererComponent>(ent)->text =
+				achievementManager.GetEnemyTypeString(tiles[0].enemyType);
+							else
 			{
 				GameObject go = ent;
 				go.SetActive(false);
@@ -100,9 +99,9 @@ void TileManagerScript::OnStart(Registry& registry)
 		}
 		else if (nameComp.name == "Gimmick_Text") {
 			if (tiles.size() != 0 && !CEO::Get<MapManager>()->losecon)
-				registry.GetComponent<TextRendererComponent>(ent)->text =
-				CEO::Instance().GetManager<MapManager>()->GetGimmickTypeString(tiles[0].gimmickType);
-			else
+			registry.GetComponent<TextRendererComponent>(ent)->text =
+				mapManager.GetGimmickTypeString(tiles[0].gimmickType);
+							else
 			{
 				GameObject go = ent;
 				go.SetActive(false);
