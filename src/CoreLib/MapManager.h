@@ -17,14 +17,7 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 #include "GameObjects.h"
 #include "AchievementManager.h"
 
-// Enum for the different types of enemies possible for a map tile
-enum class EnemyType {
-	SMALL = 0,				// Eyeball enemy
-	MEDIUM,					// Girl Enemy
-	LARGE,					// Oni Enemy
-	SMALL_AND_MEDIUM, SMALL_AND_LARGE, MEDIUM_AND_LARGE, EVERYTHING,	// mix and match of diff enemy types
-	NONE					// for special tiles like start, end, and treasure. No enemies will be spawned
-};
+
 // Enum for different tile gimmicks
 enum class GimmickType {
 	NONE = 0,			// No Gimmick
@@ -350,12 +343,6 @@ public:
 	*/
 	std::vector<TileChoice> GetTileOffers() const;
 
-	/*!
-	* \brief Helper function to get enemy type enum as string.
-	* \param[in] type		- The enemy type type.
-	* \return - The string of the enemy type.
-	*/
-	std::string GetEnemyTypeString(EnemyType type) const;
 	/*!
 	* \brief Helper function to get gimmick type enum as string.
 	* \param[in] type		- The gimmick type.

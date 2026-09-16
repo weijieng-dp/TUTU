@@ -472,19 +472,6 @@ std::vector<TileChoice> MapManager::GetTileOffers() const {
 	return tiles;
 }
 
-std::string MapManager::GetEnemyTypeString(EnemyType type) const {
-	switch (type) {
-		case EnemyType::SMALL: return "SMALL";
-		case EnemyType::MEDIUM: return "MEDIUM";
-		case EnemyType::LARGE: return "LARGE";
-		case EnemyType::SMALL_AND_LARGE: return "SMALL AND LARGE";
-		case EnemyType::SMALL_AND_MEDIUM: return "SMALL AND MED";
-		case EnemyType::MEDIUM_AND_LARGE: return "MED AND LARGE";
-		case EnemyType::EVERYTHING: return "EVERYTHING";
-		default: return "NONE";
-	}
-}
-
 std::string MapManager::GetGimmickTypeString(GimmickType type) const {
 	switch (type) {
 		case GimmickType::NONE: return "NONE";
@@ -809,21 +796,11 @@ std::vector<int> MapManager::GetPlaceableTiles(size_t n) {
 }
 
 EnemyType MapManager::GenerateEnemyType(std::mt19937& rng) {
-	std::uniform_int_distribution<> randEnemyType{ 0, static_cast<int>(EnemyType::NONE) - 1};
-	EnemyType enemy;
-	auto unlockedEnemy{ CEO::Get<AchievementManager>()->GetUnlockedAchievements(RewardType::ENEMY) };
-	std::vector<Achievement>::iterator it;
-	do {	// check if generated enemy type is unlocked, else generate again
-		enemy = static_cast<EnemyType>(randEnemyType(rng));
-		if (enemy == EnemyType::SMALL) break;
-		it = std::find_if(unlockedEnemy.begin(), unlockedEnemy.end(), [currEnemy = GetEnemyTypeString(enemy)](const Achievement& unlocked) {
-			for (int i{}; i < unlocked.rewardItem.size(); ++i) if (currEnemy.find(unlocked.rewardItem[i]) != std::string::npos) return true;
-				return false;
-			}
-		);
-	} while (it == unlockedEnemy.end());
+	auto& achievementManager{ *CEO::Get<AchievementManager>() };
+	auto unlockedEnemyTypes{ achievementManager.GetUnlockedEnemyTypes() };
 	
-	return enemy;
+	std::uniform_int_distribution<> dist{ 0, static_cast<int>(unlockedEnemyTypes.size()) - 1};
+	return unlockedEnemyTypes[dist(rng)];
 }
 
 GimmickType MapManager::GenerateGimmickType(std::mt19937& rng) {

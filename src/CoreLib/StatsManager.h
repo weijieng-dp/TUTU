@@ -534,6 +534,7 @@ struct PoisonEffect : StatusEffect {
 	PoisonEffect(PoisonEffect const& other) : StatusEffect(other.duration, other.effectiveness) {}
 
 	double tickTimeElapsed = 0.f;
+	int tickCount = 0;
 
 	/*!
 	* \brief

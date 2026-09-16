@@ -35,6 +35,8 @@ public:
     */
     void EnableEnemies(Registry& registry);
 
+    void RefreshWaveAvailability();
+
     float enemySpawnRadius{ 350.f };        // how far away the spawn points need to be from the player (world space)
 
     bool isWave{ false };                   // whether this script will handle spawning wave enemies
@@ -60,6 +62,9 @@ private:
     EntityRegistry::Entity playerEnt{};                     // the player ent (cached for faster access)
     EntityRegistry::Entity dialogueEnt{};                   // the dialogue text (cached for faster access)
     EntityRegistry::Entity waveTxtEnt{};                    // Wave text (cached for faster access) [can be removed]
+
+    std::vector<std::string> availableEnemiesPrefab;        // used for waves, track the enemies prefab that are available to be spawned
+    std::discrete_distribution<> availableEnemyDist;        // available enemy weight distrubtion, used to randomise enemy wave spawning
 
     float spawnDelayTimer{}, waveDelayTimer{};          // Timers for delay, 1 for delaying spawning and the other to delay the wave
     int totalWaveEnemiesSpawned{};                      // Counter for the total number of enemies for this wave

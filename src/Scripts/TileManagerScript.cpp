@@ -53,13 +53,17 @@ void TileManagerScript::OnStart(Registry& registry)
 	CEO::Get<EventsDispatcher>()->Dispatch<Events::ChangeCursor>(Events::ChangeCursor{ "pointer"});
 #endif
 
-	placed = false;	// set placed to false when entering map scene
-	CEO::Get<MapManager>()->GenerateTileOffers();	// generate the 3 random tile choices player can choose
+	auto& mapManager{ *CEO::Get<MapManager>() };
+	auto& achievementManager{ *CEO::Get<AchievementManager>() };
 
-	auto* start{ CEO::Get<MapManager>()->GetTile(TileType::START) };
-	auto* end{ CEO::Get<MapManager>()->GetTile(TileType::END) };
-	auto* treasure{ CEO::Get<MapManager>()->GetTile(TileType::TREASURE) };
-	auto tiles{ CEO::Get<MapManager>()->GetTileOffers() };
+
+	placed = false;	// set placed to false when entering map scene
+	mapManager.GenerateTileOffers();	// generate the 3 random tile choices player can choose
+
+	auto* start{ mapManager.GetTile(TileType::START) };
+	auto* end{ mapManager.GetTile(TileType::END) };
+	auto* treasure{ mapManager.GetTile(TileType::TREASURE) };
+	auto tiles{ mapManager.GetTileOffers() };
 
 	UITransformComponent ui;
 	unsigned layerPriority{};
@@ -116,7 +120,6 @@ void TileManagerScript::OnStart(Registry& registry)
 		}
  	}
 
-	auto& mapManager{ *CEO::Get<MapManager>() };
 	if (startTile && endTile && treasureTile) {
 		auto pos{ mapManager.CalculateGridPos(*start->tileData, start->anchor) };
 		auto uiComp{ registry.GetComponent<UITransformComponent>(startTile) };
