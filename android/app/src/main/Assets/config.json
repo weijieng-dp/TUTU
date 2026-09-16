@@ -7,7 +7,7 @@
 			"BGM": "mainost.wav",
 			"EntryScene": "Landing Page",
 			"Fullscreen": false,
-			"Lose Focus when Alt Tabbed": false
+			"Lose Focus when Alt Tabbed": true
 		}
 	],
 	"Cursors": [

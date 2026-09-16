@@ -19,9 +19,7 @@ All rights reserved.
 #include <array>
 #include <unordered_map>
 
-constexpr int GRID_COLS = 7*4*2;
-constexpr int GRID_ROWS = 7 * 4;
-constexpr int GRID_CELL_SIZE = 640;
+constexpr int GRID_CELL_SIZE = 2080 + 320 + 160;
 constexpr int MAX_ENTITIES = 2048;
 
 class BroadPhaseGrid {
@@ -32,13 +30,13 @@ public:
     void UpdateEntity(Registry& registry, int entity);
     void RemoveEntity(int entity);
     void GetCandidatePairs(std::vector<std::pair<EntityRegistry::Entity, EntityRegistry::Entity>>& outPairs);
-    std::array<std::bitset<MAX_ENTITIES>, GRID_ROWS>& getRowBits() { return rowBits; }
-    std::array<std::bitset<MAX_ENTITIES>, GRID_COLS>& getColBits() { return colBits; }
+    std::unordered_map<int, std::bitset<MAX_ENTITIES>>& getRowBits() { return rowBits; }
+    std::unordered_map<int, std::bitset<MAX_ENTITIES>>& getColBits() { return colBits; }
 
 private:
     // Bitsets representing rows and columns
-    std::array<std::bitset<MAX_ENTITIES>, GRID_ROWS> rowBits;
-    std::array<std::bitset<MAX_ENTITIES>, GRID_COLS> colBits;
+    std::unordered_map<int, std::bitset<MAX_ENTITIES>> rowBits;
+    std::unordered_map<int, std::bitset<MAX_ENTITIES>> colBits;
 
     // Stores which rows/cols each entity currently occupies
     struct EntityGridBounds {
