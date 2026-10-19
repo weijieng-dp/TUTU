@@ -896,10 +896,12 @@ void GLApp::UpdateTransform(Registry& registry)
 {
 	Mat3 scale{}, rotate{}, trans{};
 
+	auto const& transformStorage = registry.GetStorage<TransformComponent>();
+	auto const& hierarchyStorage = registry.GetStorage<HierarchyComponnent>();
 	for (auto entity : CEO::Instance().GetManager<HierarchyManager>()->GetHierarchyList())
 	{
-		TransformComponent& transform = *registry.GetComponent<TransformComponent>(entity);
-		HierarchyComponnent& HC = *registry.GetComponent<HierarchyComponnent>(entity);
+		TransformComponent& transform = *transformStorage->Get(entity);
+		HierarchyComponnent& HC = *hierarchyStorage->Get(entity);
 
 		// mdl transform
 		if (!&transform) continue;

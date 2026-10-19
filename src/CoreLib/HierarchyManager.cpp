@@ -20,9 +20,11 @@ void HierarchyManager::UpdateActiveHierarchy()
 {
 	std::vector <EntityRegistry::Entity> TempHierarchyList;
 	Registry* reg = CEO::Instance().GetManager<Registry>();
+	const auto& hierarchyStorage = reg->GetStorage<HierarchyComponnent>();
+	const auto& activeStorage = reg->GetStorage<ActiveComponent>();
 	for (auto root : reg->GetEntitiesWithComponent<HierarchyComponnent>())
 	{
-		auto* h = reg->GetComponent<HierarchyComponnent>(root);
+		auto* h = hierarchyStorage->Get(root);
 
 		if (h->parent != 0) continue;
 
@@ -30,8 +32,8 @@ void HierarchyManager::UpdateActiveHierarchy()
 
 		while (cur != 0)
 		{
-			 h = reg->GetComponent<HierarchyComponnent>(cur);
-			auto* a = reg->GetComponent<ActiveComponent>(cur);
+			 h = hierarchyStorage->Get(cur);
+			auto* a = activeStorage->Get(cur);
 
 
 			if (h->parent == 0)
@@ -41,7 +43,7 @@ void HierarchyManager::UpdateActiveHierarchy()
 			}
 			else
 			{
-				auto* parentAct = reg->GetComponent<ActiveComponent>(h->parent);
+				auto* parentAct = activeStorage->Get(h->parent);
 				a->isActiveInHierarchy = a->isActiveSelf && parentAct->isActiveInHierarchy;
 			}
 
@@ -55,7 +57,7 @@ void HierarchyManager::UpdateActiveHierarchy()
 			{
 				while (cur != 0)
 				{
-					auto* hc = reg->GetComponent<HierarchyComponnent>(cur);
+					auto* hc = hierarchyStorage->Get(cur);
 					if (hc->nextSibling != 0)
 					{
 						cur = hc->nextSibling;
