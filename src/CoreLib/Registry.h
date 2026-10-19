@@ -29,6 +29,8 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 #include <iostream>
 #include <map>
 #include <limits>
+#include <tuple>
+#include <cstdint>
 #include "Platform.h"
 //#include "rttr/type.h"
 
@@ -561,13 +563,13 @@ public:
 		if (!storage) return result;
 		result = storage->GetEntities();
 #ifdef PLATFORM_WINDOWS
-
+		auto dummyStorage = GetStorage<PrefabDummyMetatag>();
 		result.erase(
 			std::remove_if(
 				result.begin(),
 				result.end(),
 				[&](Entity entity) {
-					return (HasComponent<PrefabDummyMetatag>(entity));
+					return dummyStorage->Get(entity) != nullptr;
 				}
 			),
 			result.end()
@@ -589,28 +591,22 @@ public:
 	*/
 	template <typename... Components>
 	std::vector<Entity> GetEntitiesWithComponents() {
-		auto firstStorage = GetStorage<std::tuple_element_t<0, std::tuple<Components...>>>();
+		// Look up every storage once instead of once per entity
+		auto storages = std::make_tuple(GetStorage<Components>()...);
+		auto firstStorage = std::get<0>(storages);
+#ifdef PLATFORM_WINDOWS
+		auto dummyStorage = GetStorage<PrefabDummyMetatag>();
+#endif
 		std::vector<Entity> result;
 
 		for (Entity entity : firstStorage->GetEntities()) {
-			if ((HasComponent<Components>(entity) && ...)) {
+#ifdef PLATFORM_WINDOWS
+			if (dummyStorage->Get(entity)) continue;
+#endif
+			if (std::apply([entity](auto*... storage) { return ((storage->Get(entity) != nullptr) && ...); }, storages)) {
 				result.push_back(entity);
 			}
 		}
-
-#ifdef PLATFORM_WINDOWS
-
-        result.erase(
-			std::remove_if(
-				result.begin(),
-				result.end(),
-				[&](Entity entity) {
-					return (HasComponent<PrefabDummyMetatag>(entity));
-				}
-			),
-			result.end()
-		);
-#endif
 
 		return result;
 	}
@@ -639,16 +635,32 @@ public:
 	*/
 	template <typename Component>
 	ComponentStorage<Component>* GetStorage() {
-		auto type = std::type_index(typeid(Component));
-		if (componentStorages.find(type) == componentStorages.end()) {
-			componentStorages[type] = std::make_unique<ComponentStorage<Component>>();
+		// Hashing/comparing type_index goes through the mangled type name, which is slow
+		// on MSVC, so the storage pointer is cached per type. The cache is per module
+		// (exe and Scripts DLL each have their own) and is invalidated by storageGeneration
+		// whenever a storage is erased.
+		static Registry* cachedOwner = nullptr;
+		static std::uint64_t cachedGeneration = 0;
+		static ComponentStorage<Component>* cachedStorage = nullptr;
+		if (cachedOwner == this && cachedGeneration == storageGeneration) {
+			return cachedStorage;
 		}
-		return static_cast<ComponentStorage<Component>*>(componentStorages[type].get());
+
+		auto [it, inserted] = componentStorages.try_emplace(std::type_index(typeid(Component)));
+		if (inserted) {
+			it->second = std::make_unique<ComponentStorage<Component>>();
+		}
+		cachedOwner = this;
+		cachedGeneration = storageGeneration;
+		cachedStorage = static_cast<ComponentStorage<Component>*>(it->second.get());
+		return cachedStorage;
 	}
 private:
 
 	EntityRegistry entityRegistry;
 	std::unordered_map<std::type_index, std::unique_ptr<IComponentStorage>> componentStorages;
+	// Bumped whenever a storage is erased so cached GetStorage pointers are refetched
+	std::uint64_t storageGeneration = 1;
 
 
 

@@ -16,6 +16,11 @@ Copyright (C) 2026 DigiPen Institute of Technology. All rights reserved.
 void Pathfind::DrawCollisionMap(Registry& r) {
 	if (!playerPosSet) return;
 
+	// Same collider list for both resolutions, so query it once
+	std::vector<EntityRegistry::Entity> collIdList = r.GetEntitiesWithComponent<CollisionComponent>();
+	auto collisionStorage = r.GetStorage<CollisionComponent>();
+	auto enemyStorage = r.GetStorage<EnemyComponent>();
+
 	for (int i{}; i < 2; i++) {
 
 		std::vector<unsigned>* CollisionMap;
@@ -28,13 +33,12 @@ void Pathfind::DrawCollisionMap(Registry& r) {
 		unsigned colliMapHeight = static_cast<unsigned>(CollisionMapHeight) / collisionRes + 1;		// the y dimension of the collision map
 
 		// Intializing the collision map
-		std::vector<EntityRegistry::Entity> collIdList = r.GetEntitiesWithComponent<CollisionComponent>();
 		if (CollisionMap->empty()) CollisionMap->resize(colliMapWidth * colliMapHeight);
 		std::fill(CollisionMap->begin(), CollisionMap->end(), 0);
 		for (EntityRegistry::Entity e : collIdList) {
 			if (e != playerID) { // excluding the player
-				if (r.HasComponent<EnemyComponent>(e)) continue;
-				CollisionComponent* cc = r.GetComponent<CollisionComponent>(e);
+				if (enemyStorage->Get(e)) continue;
+				CollisionComponent* cc = collisionStorage->Get(e);
 				if (cc->isTrigger) continue;
 				// Getting the min/max coordinates of the collidable entity
 				std::pair<unsigned, unsigned> mincoords = WorldToIndexPair(cc->worldMin, collisionRes);

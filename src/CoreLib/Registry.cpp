@@ -113,11 +113,13 @@ void Registry::ClearAllComponentStorages()
 		it = componentStorages.erase(it);  // Erase returns the next iterator
 
 	}
+	++storageGeneration;
 
 }
 void Registry::EraseComponentStorage(std::type_index componentType)
 {
 	componentStorages.erase(componentType);
+	++storageGeneration;
 }
 
 void Registry::DestroyEntity(Registry::Entity entity) {
