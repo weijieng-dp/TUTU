@@ -23,13 +23,31 @@ project(GAM200-ENGINE)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CONFIGURATION_TYPES
-    "Debug;Release;RelWithDebInfo;MinSizeRel;Package"
+    "Debug;Release;RelWithDebInfo;MinSizeRel;Package;PackageWithDebugInfo"
    CACHE STRING "" FORCE)
 
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
 
 set(CMAKE_MAP_IMPORTED_CONFIG_PACKAGE "Release")
+set(CMAKE_MAP_IMPORTED_CONFIG_PACKAGEWITHDEBUGINFO "Release")
+
+# Package = optimized shipping build (same codegen as Release, no EditorFlag)
+set(CMAKE_C_FLAGS_PACKAGE "/O2 /Ob2 /DNDEBUG")
+set(CMAKE_CXX_FLAGS_PACKAGE "/O2 /Ob2 /DNDEBUG")
+set(CMAKE_EXE_LINKER_FLAGS_PACKAGE "/INCREMENTAL:NO")
+set(CMAKE_SHARED_LINKER_FLAGS_PACKAGE "/INCREMENTAL:NO")
+set(CMAKE_MODULE_LINKER_FLAGS_PACKAGE "/INCREMENTAL:NO")
+set(CMAKE_STATIC_LINKER_FLAGS_PACKAGE "")
+
+# PackageWithDebugInfo = Package + PDBs. /OPT:REF,ICF keeps the linker output
+# the same as Package, since /DEBUG would otherwise turn those off.
+set(CMAKE_C_FLAGS_PACKAGEWITHDEBUGINFO "${CMAKE_C_FLAGS_PACKAGE} /Zi")
+set(CMAKE_CXX_FLAGS_PACKAGEWITHDEBUGINFO "${CMAKE_CXX_FLAGS_PACKAGE} /Zi")
+set(CMAKE_EXE_LINKER_FLAGS_PACKAGEWITHDEBUGINFO "${CMAKE_EXE_LINKER_FLAGS_PACKAGE} /DEBUG /OPT:REF /OPT:ICF")
+set(CMAKE_SHARED_LINKER_FLAGS_PACKAGEWITHDEBUGINFO "${CMAKE_SHARED_LINKER_FLAGS_PACKAGE} /DEBUG /OPT:REF /OPT:ICF")
+set(CMAKE_MODULE_LINKER_FLAGS_PACKAGEWITHDEBUGINFO "${CMAKE_MODULE_LINKER_FLAGS_PACKAGE} /DEBUG /OPT:REF /OPT:ICF")
+set(CMAKE_STATIC_LINKER_FLAGS_PACKAGEWITHDEBUGINFO "${CMAKE_STATIC_LINKER_FLAGS_PACKAGE}")
 
 add_compile_definitions(
     $<$<CONFIG:Debug>:EditorFlag>
@@ -94,11 +112,13 @@ endif()
 
 
 target_link_options(GetMeOutOfHell PRIVATE
-    "$<IF:$<OR:$<CONFIG:Package>,$<CONFIG:MinSizeRel>>,/SUBSYSTEM:WINDOWS,>"
+    "$<IF:$<OR:$<CONFIG:Package>,$<CONFIG:PackageWithDebugInfo>,$<CONFIG:MinSizeRel>>,/SUBSYSTEM:WINDOWS,>"
 )
 
 
-add_dependencies(GetMeOutOfHell CoreLib) 
+add_dependencies(GetMeOutOfHell CoreLib)
+# Post-build copies Scripts.dll next to the exe, so it must exist first
+add_dependencies(GetMeOutOfHell Scripts)
 #add_dependencies(Scripts CoreLib)
 
 target_link_directories(CoreLib PRIVATE 

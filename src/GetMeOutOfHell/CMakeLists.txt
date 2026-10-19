@@ -35,6 +35,7 @@ target_link_directories(GetMeOutOfHell PRIVATE
     $<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/lib/CoreLib/Debug>
     $<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/lib/CoreLib/Release>
     $<$<CONFIG:Package>:${CMAKE_SOURCE_DIR}/lib/CoreLib/Package>
+    $<$<CONFIG:PackageWithDebugInfo>:${CMAKE_SOURCE_DIR}/lib/CoreLib/PackageWithDebugInfo>
     ${CMAKE_SOURCE_DIR}/lib/fmod/lib/x64
 )
 
@@ -59,12 +60,14 @@ add_custom_command(TARGET GetMeOutOfHell POST_BUILD
         $<$<CONFIG:Debug>:"${CMAKE_SOURCE_DIR}/lib/fmod/lib/x64/fmodL.dll">
         $<$<CONFIG:Release>:"${CMAKE_SOURCE_DIR}/lib/fmod/lib/x64/fmod.dll">
         $<$<CONFIG:Package>:"${CMAKE_SOURCE_DIR}/lib/fmod/lib/x64/fmod.dll">
+        $<$<CONFIG:PackageWithDebugInfo>:"${CMAKE_SOURCE_DIR}/lib/fmod/lib/x64/fmod.dll">
         $<TARGET_FILE_DIR:GetMeOutOfHell>
 
 COMMAND ${CMAKE_COMMAND} -E copy_if_different
 	$<$<CONFIG:Debug>:"${CMAKE_SOURCE_DIR}/build/src/Scripts/Debug/Scripts.dll">
 	$<$<CONFIG:Release>:"${CMAKE_SOURCE_DIR}/build/src/Scripts/Release/Scripts.dll">
 	$<$<CONFIG:Package>:"${CMAKE_SOURCE_DIR}/build/src/Scripts/Package/Scripts.dll">
+	$<$<CONFIG:PackageWithDebugInfo>:"${CMAKE_SOURCE_DIR}/build/src/Scripts/PackageWithDebugInfo/Scripts.dll">
         $<TARGET_FILE_DIR:GetMeOutOfHell>
 
 
